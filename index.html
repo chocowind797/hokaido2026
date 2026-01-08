@@ -16,10 +16,16 @@
     <nav class="sticky-nav">
         <a href="#info" class="nav-item">航班</a>
         <a href="#day1" class="nav-item">D1 出發</a>
-        <a href="#day2" class="nav-item">D2 樂園</a>
-        <a href="#day3" class="nav-item">D3 澀谷</a>
-        <a href="#day4" class="nav-item">D4 淺草</a>
-        <a href="#day5" class="nav-item">D5 返程</a>
+        <a href="#day2" class="nav-item">D2 余市</a>
+        <a href="#day3" class="nav-item">D3 採買</a>
+        <a href="#day4" class="nav-item">D4 滑雪 I</a>
+        <a href="#day5" class="nav-item">D5 滑雪 II</a>
+        <a href="#day6" class="nav-item">D6 函館 I</a>
+        <a href="#day7" class="nav-item">D7 滑雪 II</a>
+        <a href="#day8" class="nav-item">D8 滑雪 II</a>
+        <a href="#day9" class="nav-item">D9 滑雪 II</a>
+        <a href="#day10" class="nav-item">D10 滑雪 II</a>
+        <a href="#day11" class="nav-item">D11 滑雪 II</a>
         <a href="#pack" class="nav-item">清單</a>
     </nav>
 
@@ -314,7 +320,7 @@
 
     </div>
 
-    <div id="day3" class="section-title">Day 3 (三) 札幌XX</div>
+    <div id="day3" class="section-title">Day 3 (三) 札幌採買</div>
     <div class="card">
         
         <div class="timeline-item">
@@ -478,28 +484,208 @@
 
     </div>
 
-    <div id="day5" class="section-title">Day 5 (日) 返程</div>
+    <div id="day5" class="section-title">Day 5 (五) 滑雪 II</div>
     <div class="card">
+        
         <div class="timeline-item">
-            <div class="time-badge">10:00</div>
+            <div class="time-badge">08:00</div>
             <div class="activity-content">
-                <div class="activity-title">Check-out</div>
-                <div class="activity-desc">行李寄放櫃台</div>
+                <details class="timeline-details">
+                    <summary class="activity-title">札幌 → 留壽都 🚌</summary>
+                    <div class="timeline-box">
+                        <div class="info-line">⏱️ 時間：08:00 出發 - 10:00 抵達</div>
+                        <div class="info-line">📍 地點：札幌加森大樓前</div>
+                        <div class="info-line">💰 票價：包含於套票 / ¥4,500</div>
+                        <div class="info-line">🔢 預定編號：#BUS-RUSUTSU-03</div>
+                    </div>
+                </details>
+                <div class="activity-desc">搭乘接駁巴士 (Rusutsu Liner)</div>
             </div>
         </div>
+
         <div class="timeline-item">
-            <div class="time-badge">12:30</div>
+            <div class="time-badge">10:XX</div>
             <div class="activity-content">
-                <div class="activity-title">前往機場</div>
-                <div class="activity-desc">搭乘 Skyliner</div>
+                <a href="https://rusutsu.com/zh/rentals-station/" target="_blank" class="activity-title">
+                    留壽都滑雪場 (租借) 🎿
+                </a>
+                <div class="activity-desc">繼續滑雪 Day 2</div>
             </div>
         </div>
+
         <div class="timeline-item">
-            <div class="time-badge">14:15</div>
+            <div class="time-badge">16:XX</div>
             <div class="activity-content">
-                <div class="activity-title">班機起飛</div>
+                <details class="timeline-details">
+                    <summary class="activity-title">留壽都 → 札幌 🚌</summary>
+                    <div class="timeline-box">
+                        <div class="info-line">⏱️ 時間：16:50 出發 - 18:50 抵達</div>
+                        <div class="info-line">📍 地點：留壽都渡假村門口</div>
+                        <div class="info-line">💰 票價：包含於套票 / ¥4,500</div>
+                        <div class="info-line">🔢 預定編號：#BUS-RUSUTSU-04</div>
+                    </div>
+                </details>
+                <div class="activity-desc">返回札幌市區</div>
             </div>
         </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">19:00</div>
+            <div class="activity-content">
+                <div class="activity-title">晚餐時間 🍣</div>
+                <div class="activity-desc">根室花丸迴轉壽司 / 拉麵共和國</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <details class="timeline-details">
+                    <summary class="activity-title">The Gate Hotel 🏨</summary>
+                    <div class="timeline-box">
+                        <div class="info-line">
+                            <a href="https://www.google.com/maps/search/?api=1&query=The+Gate+Hotel+Sapporo" target="_blank" class="map-link">
+                                📍 札幌市中央區 (點擊導航)
+                            </a>
+                        </div>
+                        <div class="info-line">📅 續住第三晚</div>
+                        
+                        <div class="mini-btn-group">
+                            <button class="mini-btn btn-emergency" onclick="showModal('【The Gate Hotel 緊急聯絡】\n\n🕒 24小時櫃台\n📞 電話：+81-11-123-4567\n📧 信箱：service@gate-sapporo.jp')">
+                                🆘 緊急聯絡
+                            </button>
+                            <button class="mini-btn btn-checkin" onclick="showModal('【自助入住資訊】\n\n1. 請至 2F 大廳機台報到\n2. 掃描護照\n3. 領取房卡與早餐券')">
+                                🔑 自助入住
+                            </button>
+                        </div>
+                    </div>
+                </details>
+                <div class="activity-desc">點擊查看住宿詳情</div>
+            </div>
+        </div>
+
+    </div>
+    
+    <div id="day6" class="section-title">Day 6 (六) 函館</div>
+    <div class="card">
+        
+        <div class="timeline-item">
+            <div class="time-badge">11:00</div>
+            <div class="activity-content">
+                <div class="activity-title" onclick="showModal('【退房資訊】\n\n1. 請將房卡投入 1F 歸還箱。\n2. 若有寄放行李，請拍照留存號碼牌。\n3. 確認隨身物品（充電器、轉接頭）。')">
+                    退房 Check-out 🔑
+                </div>
+                <div class="activity-desc">點擊查看退房須知</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <div class="activity-title">逛札幌市區 🛍️</div>
+                <div class="activity-desc">最後採買 / 狸小路 / 大通公園</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <details class="timeline-details">
+                    <summary class="activity-title">札幌 → 新千歲機場 🚆</summary>
+                    <div class="timeline-box">
+                        <div class="info-line" style="border-bottom: 1px dashed #ddd; padding-bottom: 5px; margin-bottom: 8px;">
+                            <strong>Option 1</strong><br>
+                            13:00 發 - 13:37 着 (¥1,150)<br>
+                            <span style="font-size:0.8rem; color:#888;">JR 快速 Airport</span>
+                        </div>
+                        <div class="info-line" style="border-bottom: 1px dashed #ddd; padding-bottom: 5px; margin-bottom: 8px;">
+                            <strong>Option 2</strong><br>
+                            13:12 發 - 13:49 着 (¥1,150)<br>
+                            <span style="font-size:0.8rem; color:#888;">JR 快速 Airport</span>
+                        </div>
+                        <div class="info-line">
+                            <strong>Option 3</strong><br>
+                            13:24 發 - 14:01 着 (¥1,150)<br>
+                            <span style="font-size:0.8rem; color:#888;">JR 快速 Airport</span>
+                        </div>
+                        
+                        <a href="http://googleusercontent.com/maps.google.com/7" target="_blank" class="btn-bus" style="background-color: #4285F4;">
+                            🗺️ Google Map 路線資訊
+                        </a>
+                    </div>
+                </details>
+                <div class="activity-desc">搭乘 JR 快速 Airport 號</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <a href="https://www.hokkaido-airports.com/zh-CHT/new-chitose/floormap/domestic/#anchor-tabs" target="_blank" class="activity-title">
+                    新千歲機場吃飯 🍜
+                </a>
+                <div class="activity-desc">拉麵道場 / 哆啦A夢餐廳</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">17:55</div>
+            <div class="activity-content">
+                <a href="#info" class="activity-title">
+                    新千歲 → 函館機場 ✈️
+                </a>
+                <div class="activity-desc">點擊查看航班資訊 (ANA/JAL)</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <details class="timeline-details">
+                    <summary class="activity-title">機場巴士 → ベイエリア前 🚌</summary>
+                    <div class="timeline-box">
+                        <div class="info-line">📍 上車：函館機場 3號月台</div>
+                        <div class="info-line">🏁 下車：ベイエリア前 (Bay Area)</div>
+                        <div class="info-line">💰 票價：¥500 (下車投現/刷卡)</div>
+                        <div class="info-line">⏱️ 車程：約 20 分鐘</div>
+                        
+                        <a href="https://www.google.com/maps/search/?api=1&query=Hakodate+Airport+Bus+Stop" target="_blank" class="btn-bus" style="background-color: #4285F4;">
+                            🗺️ 導航至巴士站
+                        </a>
+                    </div>
+                </details>
+                <div class="activity-desc">前往金森紅磚倉庫區</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <details class="timeline-details">
+                    <summary class="activity-title">HakoBA 函館 🏨</summary>
+                    <div class="timeline-box">
+                        <div class="info-line">
+                            <a href="https://www.google.com/maps/search/?api=1&query=HakoBA+Hakodate" target="_blank" class="map-link">
+                                📍 函館市末廣町 (點擊導航)
+                            </a>
+                        </div>
+                        <div class="info-line">📅 入住：2026/XX/XX (六)</div>
+                        <div class="info-line">⚠️ 注意：頂樓有公共露台可看夜景</div>
+
+                        <div class="mini-btn-group">
+                            <button class="mini-btn btn-emergency" onclick="showModal('【HakoBA 緊急聯絡】\n\n🕒 櫃台時間：07:00 - 23:00\n📞 電話：+81-138-12-3456\n📧 信箱：book@hakoba.jp')">
+                                🆘 緊急聯絡
+                            </button>
+                            <button class="mini-btn btn-checkin" onclick="showModal('【自助入住資訊】\n\n1. 入口密碼：1234#\n2. 平板輸入訂單編號\n3. 領取房號密碼單')">
+                                🔑 自助入住
+                            </button>
+                        </div>
+                    </div>
+                </details>
+                <div class="activity-desc">點擊查看住宿詳情</div>
+            </div>
+        </div>
+
     </div>
 
     <div id="pack" class="section-title">行李檢查</div>
