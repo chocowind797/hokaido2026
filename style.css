@@ -1,0 +1,462 @@
+/* --- 基礎設定 --- */
+
+/* style.css 最上方 */
+
+html {
+    scroll-behavior: smooth; /* 關鍵：讓跳轉變成平滑滑動 */
+}
+
+:root {
+    --primary: #2c3e50;    /* 主色 */
+    --accent: #3498db;     /* 強調色 (改為亮藍色，更像 App) */
+    --bg: #f2f2f7;         /* iOS 風格灰底 */
+    --card: #ffffff;
+    --text: #333333;
+    --nav-height: 60px;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    padding-bottom: 50px; /* 底部留白 */
+}
+
+/* --- 頂部 Header --- */
+header {
+    /* modify: 背景圖 */
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1000&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 40px 20px 80px; /* 下方留空間給導覽列 */
+    position: relative;
+}
+
+h1 { margin: 0; font-size: 1.8rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.subtitle { font-size: 0.9rem; margin-top: 5px; opacity: 0.9; }
+
+/* --- 黏性導覽列 (Sticky Nav) --- */
+.sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px); /* 毛玻璃特效 */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    overflow-x: auto; /* 允許左右滑動 */
+    white-space: nowrap;
+    padding: 0 10px;
+    margin-top: -30px; /* 往上蓋住 header */
+    border-radius: 20px 20px 0 0;
+    
+    /* 隱藏卷軸 */
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+}
+.sticky-nav::-webkit-scrollbar { display: none; }
+
+.nav-item {
+    display: inline-block;
+    padding: 15px 15px;
+    color: #888;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border-bottom: 3px solid transparent;
+}
+.nav-item.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+/* style.css */
+
+/* 修改原本的 .section-title */
+.section-title {
+    padding: 20px 20px 10px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--primary);
+    scroll-margin-top: 80px;
+    
+    /* --- 新增這三行，讓按鈕可以靠右對齊 --- */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* --- 新增 VJW 按鈕樣式 --- */
+.btn-vjw {
+    background-color: #e74c3c; /* 紅色 (配合 VJW Logo 色系) */
+    color: white;
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 50px;       /* 圓角造型 */
+    text-decoration: none;
+    font-weight: normal;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    transition: transform 0.1s;
+}
+.btn-vjw:active { transform: scale(0.95); opacity: 0.9; }
+
+.card {
+    background: var(--card);
+    margin: 0 15px 15px; /* 手機版左右留一點邊距 */
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* --- 行程表設計 --- */
+.timeline-item {
+    display: flex;
+    margin-bottom: 20px;
+    position: relative;
+}
+.timeline-item:last-child { margin-bottom: 0; }
+
+/* 時間軸線 */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 25px;
+    bottom: -25px;
+    width: 2px;
+    background: #eee;
+    z-index: 0;
+}
+.timeline-item:last-child::before { display: none; }
+
+.time-badge {
+    background: var(--bg);
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 0.85rem;
+    padding: 5px 8px;
+    border-radius: 8px;
+    min-width: 55px;
+    text-align: center;
+    z-index: 1;
+    height: fit-content;
+    border: 1px solid #ddd;
+}
+
+.activity-content {
+    margin-left: 15px;
+    flex: 1;
+    padding-top: 5px;
+}
+.activity-title {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 3px;
+}
+.activity-desc {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* --- 資訊格 --- */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding: 12px 0;
+}
+.info-row:last-child { border-bottom: none; }
+.info-label { color: #888; font-size: 0.9rem; }
+.info-value { font-weight: 600; text-align: right; }
+
+/* --- 摺疊選單樣式 (新增) --- */
+details {
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+}
+details:last-child { border-bottom: none; }
+
+/* 標題列 (原本顯示的樣子) */
+summary {
+    list-style: none; /* 隱藏預設三角形 */
+    padding: 15px 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+}
+summary::-webkit-details-marker { display: none; } /* Chrome 隱藏預設三角形 */
+
+/* 右側的展開符號 */
+summary::after {
+    content: '▼'; 
+    font-size: 0.8rem;
+    color: #ccc;
+    transition: transform 0.3s;
+}
+details[open] summary::after {
+    transform: rotate(180deg); /* 展開時旋轉箭頭 */
+    color: var(--accent);
+}
+
+/* 展開後的詳細內容區塊 */
+.flight-detail-box {
+    background-color: #f8f9fa; /* 淺灰背景區隔 */
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #e0e0e0;
+    padding-bottom: 5px;
+}
+.detail-row:last-of-type { border-bottom: none; }
+
+.detail-label { color: #888; }
+.detail-value { font-weight: bold; color: #333; }
+
+/* --- 新增：並排按鈕群組 --- */
+.btn-group {
+    display: flex;      /* 讓內部元素並排 */
+    gap: 10px;          /* 按鈕之間的間距 */
+    margin-top: 15px;
+}
+
+.action-btn {
+    flex: 1;            /* 兩個按鈕平分寬度 (1:1) */
+    padding: 12px 0;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.action-btn:active { opacity: 0.8; }
+
+/* 藍色按鈕 (追蹤) */
+.btn-track {
+    background-color: var(--accent);
+    color: white;
+}
+
+/* 橘色按鈕 (注意事項) */
+.btn-note {
+    background-color: #e67e22;
+    color: white;
+}
+
+/* --- 清單 --- */
+.checklist-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+.checklist-box {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    margin-right: 12px;
+}
+
+/* --- 懸浮視窗 (Modal) 樣式 --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* 半透明黑色背景 */
+    z-index: 2000; /* 必須比導覽列高 */
+    display: none; /* 預設隱藏 */
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px); /* 背景模糊特效 */
+}
+
+.modal-box {
+    background: white;
+    width: 85%;
+    max-width: 350px;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: popup 0.3s ease-out;
+    position: relative;
+}
+
+@keyframes popup {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.modal-content {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+    white-space: pre-line; /* 讓 \n 換行符號生效 */
+    margin-bottom: 25px;
+}
+
+.modal-close-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+.modal-close-btn:active { opacity: 0.8; }
+
+/* --- 新增：行程表內的互動樣式 --- */
+
+/* 讓行程標題看起來像可點擊的連結 */
+.link-title {
+    color: var(--accent);
+    text-decoration: underline;
+    cursor: pointer;
+}
+.link-title:active { opacity: 0.7; }
+
+/* 行程內的展開區塊樣式微調 */
+.timeline-details summary {
+    padding: 0; /* 移除原本 summary 的內距，讓它對齊時間軸 */
+    justify-content: flex-start; /* 靠左對齊 */
+}
+.timeline-details summary::after {
+    margin-left: 10px; /* 箭頭離文字遠一點 */
+}
+
+/* 展開後的詳細資料框 (稍微縮小一點字體) */
+.timeline-box {
+    background: #f1f2f6;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 5px;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+/* 飯店/客運資訊的每一行 */
+.info-line {
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+}
+.info-icon { margin-right: 8px; }
+
+/* 連結按鈕 (Google Map 等) */
+.map-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* 小按鈕群組 (緊急聯絡、自助入住) */
+.mini-btn-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+.mini-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: white;
+}
+.btn-emergency { background-color: #e74c3c; } /* 紅色 */
+.btn-checkin { background-color: #27ae60; }   /* 綠色 */
+.btn-bus { background-color: var(--accent); width: 100%; display: block; text-align: center; text-decoration: none; padding: 8px; border-radius: 6px; color: white; margin-top: 10px;}
+
+/* --- 隱形連結樣式 --- */
+/* 針對是連結(a)的標題，強迫它長得像普通文字 */
+a.activity-title {
+    color: inherit;          /* 繼承父元素的顏色 (變成深灰色) */
+    text-decoration: none;   /* 去除底線 */
+    cursor: pointer;         /* 滑鼠移過去還是要有手指 */
+    display: block;          /* 保持排版完整 */
+}
+
+/* 手機點擊時稍微變淡，讓使用者知道有點到 */
+a.activity-title:active {
+    opacity: 0.5;
+}
+
+/* --- 雙欄票務表格樣式 --- */
+.ticket-grid {
+    display: grid;
+    /* 定義三欄寬度：標題佔 1.5 等份，票1 和 票2 各佔 1 等份 */
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 10px 5px; /* 上下間距 10px，左右間距 5px */
+    align-items: center; /* 垂直置中 */
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #e0e0e0;
+}
+
+/* 表頭 (1, 2) */
+.grid-head {
+    font-weight: bold;
+    color: white;
+    background-color: var(--accent); /* 用強調色當背景 */
+    text-align: center;
+    border-radius: 4px;
+    padding: 2px 0;
+    font-size: 0.9rem;
+}
+
+/* 左側標籤 (抵達時間...) */
+.grid-label {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* 數值內容 */
+.grid-value {
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    font-size: 0.9rem;
+    word-break: break-all; /* 防止長單號破版 */
+}
+
+/* 特效：跨兩欄 (用於相同的資訊) */
+.span-two {
+    grid-column: span 2; /* 叫這個格子直接橫跨 2 格 */
+    background-color: #f2f2f7; /* 加個淺灰底色區隔 */
+    border-radius: 4px;
+    padding: 2px 0;
+}
