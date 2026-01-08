@@ -18,21 +18,27 @@ function closeModal(e) {
     }
 }
 
-// --- 手機版強力手風琴效果 (修改版) ---
-// 改為監聽 click 事件，手機支援度更好
+// --- 超級強制手風琴效果 (手動控制版) ---
 document.querySelectorAll('summary').forEach(summary => {
-    summary.addEventListener('click', function() {
-        const thisDetails = this.parentElement; // 取得這個標題所屬的 details 區塊
+    summary.addEventListener('click', function(e) {
+        // 1. 阻止瀏覽器原本的開關行為 (這一步最關鍵！)
+        e.preventDefault();
 
-        // 判斷：如果目前它是關著的 (代表使用者準備要打開它)
-        if (!thisDetails.hasAttribute('open')) {
-            // 就去找所有其他的 details
-            document.querySelectorAll('details').forEach(det => {
-                // 如果找到的不是自己，就把它關掉
-                if (det !== thisDetails) {
-                    det.removeAttribute('open');
-                }
-            });
+        // 2. 取得這個標題所屬的 details 區塊
+        const currentDetails = this.parentElement;
+        
+        // 3. 記錄它現在是不是開著的
+        const isOpen = currentDetails.hasAttribute('open');
+
+        // 4. 先無情地把網頁上「所有」的 details 全部關掉
+        document.querySelectorAll('details').forEach(det => {
+            det.removeAttribute('open');
+        });
+
+        // 5. 如果原本是關著的，現在就把它打開
+        // (如果原本是開著的，因為步驟4已經關了，這裡就不動作，達成「關閉」的效果)
+        if (!isOpen) {
+            currentDetails.setAttribute('open', '');
         }
     });
 });
