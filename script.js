@@ -23,22 +23,41 @@ function closeModal(e) {
     }
 }
 
-// --- 手風琴效果 (Accordion) ---
-// 功能：當打開一個折疊區塊時，自動關閉其他已打開的區塊
+// script.js
 
-const allDetails = document.querySelectorAll('details');
+// --- 導覽列點擊效果 (保留原本的) ---
+document.querySelectorAll('.nav-item').forEach(link => {
+    link.addEventListener('click', function() {
+        document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
 
-allDetails.forEach(targetDetail => {
-    // 監聽每一個 details 的展開/縮起事件
-    targetDetail.addEventListener('toggle', () => {
-        // 只有當這個區塊是「被打開 (open)」的時候才執行
-        if (targetDetail.open) {
-            // 檢查頁面上所有其他的 details
-            allDetails.forEach(detail => {
-                // 如果這個 detail 不是目前剛被點開的那一個，而且它目前是開著的
-                if (detail !== targetDetail && detail.open) {
-                    // 就把它關掉
-                    detail.removeAttribute('open');
+// --- 懸浮視窗控制邏輯 (保留原本的) ---
+function showModal(text) {
+    document.getElementById('modalText').innerText = text;
+    document.getElementById('noteModal').style.display = 'flex';
+}
+
+function closeModal(e) {
+    if (e.target.classList.contains('modal-overlay') || e.target.classList.contains('modal-close-btn')) {
+        document.getElementById('noteModal').style.display = 'none';
+    }
+}
+
+// --- 手機版強力手風琴效果 (修改版) ---
+// 改為監聽 click 事件，手機支援度更好
+document.querySelectorAll('summary').forEach(summary => {
+    summary.addEventListener('click', function() {
+        const thisDetails = this.parentElement; // 取得這個標題所屬的 details 區塊
+
+        // 判斷：如果目前它是關著的 (代表使用者準備要打開它)
+        if (!thisDetails.hasAttribute('open')) {
+            // 就去找所有其他的 details
+            document.querySelectorAll('details').forEach(det => {
+                // 如果找到的不是自己，就把它關掉
+                if (det !== thisDetails) {
+                    det.removeAttribute('open');
                 }
             });
         }
