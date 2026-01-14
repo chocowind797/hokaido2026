@@ -4,6 +4,8 @@
 
 html {
     scroll-behavior: smooth; /* 關鍵：讓跳轉變成平滑滑動 */
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 :root {
@@ -24,12 +26,14 @@ body {
     background-color: var(--bg);
     color: var(--text);
     padding-bottom: 50px; /* 底部留白 */
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 /* --- 頂部 Header --- */
 header {
     /* modify: 背景圖 */
-    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1000&auto=format&fit=crop');
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('https://www.visit-hokkaido.jp/lsc/upfile/article/0000/0329/329_1_l.jpg');
     background-size: cover;
     background-position: center;
     color: white;
@@ -105,12 +109,37 @@ h1 { margin: 0; font-size: 1.8rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 }
 .btn-vjw:active { transform: scale(0.95); opacity: 0.9; }
 
+/* --- 航班資訊子標題樣式 --- */
+.city-label {
+    background-color: #e9ecef; /* 淺灰底色 */
+    color: var(--primary);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+.city-label::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 16px;
+    background-color: var(--accent); /* 藍色裝飾條 */
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
 .card {
     background: var(--card);
     margin: 0 15px 15px; /* 手機版左右留一點邊距 */
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    max-width: 100%;
+    overflow: hidden;
 }
 
 /* --- 行程表設計 --- */
@@ -149,6 +178,7 @@ h1 { margin: 0; font-size: 1.8rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 }
 
 .activity-content {
+    min-width: 0;   /* 🔥 超關鍵 */
     margin-left: 15px;
     flex: 1;
     padding-top: 5px;
@@ -363,6 +393,7 @@ details[open] summary::after {
     margin-top: 5px;
     font-size: 0.85rem;
     color: #555;
+    overflow: hidden; /* ⛔ 防止整個頁面被撐開 */
 }
 
 /* 飯店/客運資訊的每一行 */
@@ -461,46 +492,76 @@ a.activity-title:active {
     padding: 2px 0;
 }
 
-/* --- 橫向捲動表格專用樣式 --- */
+/* --- 凍結首欄表格樣式 (Fixed Column Table) --- */
 .table-scroll-wrapper {
-    overflow-x: auto;            /* 內容超出時顯示卷軸 */
-    -webkit-overflow-scrolling: touch; /* 讓 iOS 滑動更順暢 */
-    border: 1px solid #e0e0e0;   /* 表格淡淡的外框 */
-    border-radius: 8px;          /* 圓角 */
-    background: #fff;            /* 白色背景 */
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
     margin-top: 10px;
-}
-
-/* 隱藏醜醜的預設捲軸 (Chrome/Safari)，改用手指滑動就好 */
-.table-scroll-wrapper::-webkit-scrollbar {
-    height: 6px;
-}
-.table-scroll-wrapper::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 3px;
+    background: #fff;
+    position: relative; /* 建立定位基準 */
 }
 
 .res-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
-    min-width: 500px; /* 關鍵：強制表格寬度至少 500px，手機上一定會跑出卷軸 */
+    min-width: 100%;
+    width: max-content; /* ❗ 關鍵 */
+    border-collapse: separate; /* 為了讓 sticky 效果更好，這裡改用 separate */
+    border-spacing: 0;         /* 去除間隙 */
+    min-width: 600px;          /* 強制表格夠寬，確保一定能滑動 */
 }
 
 .res-table th, .res-table td {
     padding: 12px 10px;
     border-bottom: 1px solid #f0f0f0;
-    text-align: left;
-    white-space: nowrap; /* 關鍵：內容不換行，保持表格寬度 */
+    white-space: nowrap;       /* 禁止換行 */
+    vertical-align: middle;
+    text-align: center;
 }
 
 .res-table th {
-    background-color: #f8f9fa; /* 表頭淺灰底 */
+    background-color: #f8f9fa;
     color: #555;
     font-weight: bold;
+    border-top: none;
 }
 
-/* 偶數行變色 (斑馬紋)，閱讀比較不累 */
-.res-table tr:nth-child(even) {
-    background-color: #fdfdfd;
+/* --- 核心魔法：凍結第一欄 --- */
+.res-table th:first-child,
+.res-table td:first-child {
+    position: sticky;    /* 黏性定位 */
+    left: 0;             /* 黏在最左邊 */
+    z-index: 2;          /* 層級提高，浮在其他內容上面 */
+    border-right: 2px solid #e0e0e0; /* 加一條明顯的分割線 */
+}
+
+/* 第一欄：只吃內容寬度 */
+.res-table th:first-child,
+.res-table td:first-child {
+    width: 1%;              /* ✨ 關鍵技巧 */
+    white-space: nowrap;    /* 保證不換行 */
+}
+
+/* 因為滑動時內容會跑到第一欄下面，所以第一欄必須要有不透明背景 */
+.res-table th:first-child {
+    background-color: #f8f9fa; /* 表頭背景色 (淺灰) */
+    z-index: 3; /* 表頭的層級要最高 */
+}
+.res-table td:first-child {
+    background-color: #fff;    /* 內容背景色 (白) */
+}
+
+/* 為了美觀，給凍結的那一欄加一點陰影，更有層次感 */
+.res-table th:first-child::after,
+.res-table td:first-child::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -5px; /* 陰影打在右邊 */
+    bottom: 0;
+    width: 5px;
+    background: linear-gradient(to right, rgba(0,0,0,0.1), transparent);
+    pointer-events: none;
 }
