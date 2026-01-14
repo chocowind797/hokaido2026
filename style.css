@@ -460,3 +460,47 @@ a.activity-title:active {
     border-radius: 4px;
     padding: 2px 0;
 }
+
+/* --- 橫向捲動表格專用樣式 --- */
+.table-scroll-wrapper {
+    overflow-x: auto;            /* 內容超出時顯示卷軸 */
+    -webkit-overflow-scrolling: touch; /* 讓 iOS 滑動更順暢 */
+    border: 1px solid #e0e0e0;   /* 表格淡淡的外框 */
+    border-radius: 8px;          /* 圓角 */
+    background: #fff;            /* 白色背景 */
+    margin-top: 10px;
+}
+
+/* 隱藏醜醜的預設捲軸 (Chrome/Safari)，改用手指滑動就好 */
+.table-scroll-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+.table-scroll-wrapper::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.res-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    min-width: 500px; /* 關鍵：強制表格寬度至少 500px，手機上一定會跑出卷軸 */
+}
+
+.res-table th, .res-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+    white-space: nowrap; /* 關鍵：內容不換行，保持表格寬度 */
+}
+
+.res-table th {
+    background-color: #f8f9fa; /* 表頭淺灰底 */
+    color: #555;
+    font-weight: bold;
+}
+
+/* 偶數行變色 (斑馬紋)，閱讀比較不累 */
+.res-table tr:nth-child(even) {
+    background-color: #fdfdfd;
+}
