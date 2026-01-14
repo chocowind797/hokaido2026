@@ -14,19 +14,19 @@
     </header>
 
     <nav class="sticky-nav">
-        <a href="#info" class="nav-item">航班</a>
-        <a href="#day1" class="nav-item">D1 出發</a>
-        <a href="#day2" class="nav-item">D2 余市</a>
-        <a href="#day3" class="nav-item">D3 採買</a>
-        <a href="#day4" class="nav-item">D4 滑雪 I</a>
-        <a href="#day5" class="nav-item">D5 滑雪 II</a>
-        <a href="#day6" class="nav-item">D6 函館 I</a>
-        <a href="#day7" class="nav-item">D7 函館 II</a>
-        <a href="#day8" class="nav-item">D8 滑雪 II</a>
-        <a href="#day9" class="nav-item">D9 滑雪 II</a>
-        <a href="#day10" class="nav-item">D10 滑雪 II</a>
-        <a href="#day11" class="nav-item">D11 滑雪 II</a>
-        <a href="#pack" class="nav-item">清單</a>
+        <a href="#info" class="nav-item" data-title="航班資訊">航班</a>
+        <a href="#pack" class="nav-item" data-title="行李清單 🎒">清單</a>
+        <a href="#day1" class="nav-item" data-title="Day 1 (一) 出發日">D1 出發</a>
+        <a href="#day2" class="nav-item" data-title="Day 2 (二) 余市-小樽">D2 余市</a>
+        <a href="#day3" class="nav-item" data-title="Day 3 (三) 小樽-札幌">D3 採買</a>
+        <a href="#day4" class="nav-item" data-title="Day 4 (四) 留壽都滑雪">D4 滑雪 I</a>
+        <a href="#day5" class="nav-item" data-title="Day 5 (五) 留壽都滑雪">D5 滑雪 II</a>
+        <a href="#day6" class="nav-item" data-title="Day 6 (六) 札幌-函館">D6 函館 I</a>
+        <a href="#day7" class="nav-item" data-title="Day 7 (日) 函館觀光">D7 函館 II</a>
+        <a href="#day8" class="nav-item" data-title="Day 8 (一) 函館-札幌">D8 函館 III</a>
+        <a href="#day9" class="nav-item" data-title="Day 9 (二) 札幌逛逛">D9 札幌 I</a>
+        <a href="#day10" class="nav-item" data-title="Day 10 (三) 札幌逛逛">D10 札幌 II</a>
+        <a href="#day11" class="nav-item" data-title="Day 11 (四) 回家日">D11 回家</a>
     </nav>
 
     <div id="info" class="section-title">
@@ -156,7 +156,7 @@
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">機場航廈</span>
-                    <span class="detail-value">D</span>
+                    <span class="detail-value">X</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">訂單編號</span>
@@ -179,30 +179,123 @@
         </details>
     </div>
 
-    <div id="day1" class="section-title">Day 1 (一) 出發</div>
+    <details id="pack" style="margin-bottom: 20px;">
+        
+        <summary class="section-title" style="cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+            <span>行李清單 🎒</span>
+        </summary>
+
+        <div class="card" style="margin-top: 0;"> <div class="timeline-item">
+                <div class="activity-content" style="width: 100%;"> <div class="timeline-box" style="background-color: #f8f9fa; border: none;">
+                        <div class="info-line" style="margin-bottom: 15px; color: #666;">
+                            出發前請逐一檢查 (點擊類別展開)：
+                        </div>
+
+                        <details class="nested-details">
+                            <summary>🛂 證件財務類</summary>
+                            <div class="check-list">
+                                <label class="check-item"><input type="checkbox"> 護照 (效期6個月以上)</label>
+                                <label class="check-item"><input type="checkbox"> 各種證件照片</label>
+                                <label class="check-item"><input type="checkbox"> VJW (入境審查)</label>
+                                <label class="check-item"><input type="checkbox"> 信用卡</label>
+                                <label class="check-item"><input type="checkbox"> 日幣現金</label>
+                                <label class="check-item"><input type="checkbox"> 網卡 / esim卡</label>
+                                <label class="check-item"><input type="checkbox"> 旅平險 / 不便險</label>
+                            </div>
+                        </details>
+
+                        <details class="nested-details">
+                            <summary>🔋 電子產品</summary>
+                            <div class="check-list">
+                                <label class="check-item"><input type="checkbox"> 手機 & 充電線</label>
+                                <label class="check-item"><input type="checkbox"> 行動電源</label>
+                                <label class="check-item"><input type="checkbox"> Insta360</label>
+                            </div>
+                        </details>
+
+                        <details class="nested-details">
+                            <summary>🧥 衣物類</summary>
+                            <div class="check-list">
+                                <label class="check-item"><input type="checkbox"> 發熱衣 (Heattech)</label>
+                                <label class="check-item"><input type="checkbox"> 羽絨外套 / 防風大衣</label>
+                                <label class="check-item"><input type="checkbox"> 防水防滑靴子</label>
+                                <label class="check-item"><input type="checkbox"> 毛帽 / 圍巾 / 手套 / 口罩</label>
+                                <label class="check-item"><input type="checkbox"> 厚襪子 (羊毛襪)</label>
+                                <label class="check-item"><input type="checkbox"> 睡衣 / 貼身衣物</label>
+                                <label class="check-item"><input type="checkbox"> 免洗衣物</label>
+                            </div>
+                        </details>
+
+                        <details class="nested-details">
+                            <summary>🧴 盥洗用品</summary>
+                            <div class="check-list">
+                                <label class="check-item"><input type="checkbox"> 牙刷牙膏</label>
+                                <label class="check-item"><input type="checkbox"> 保濕乳液 / 護唇膏 / 保養品</label>
+                                <label class="check-item"><input type="checkbox"> 卸妝 / 洗面乳</label>
+                                <label class="check-item"><input type="checkbox"> 個人常備藥 (感冒/胃藥)</label>
+                                <label class="check-item"><input type="checkbox"> 隱形眼鏡 & 藥水</label>
+                            </div>
+                        </details>
+
+                        <details class="nested-details">
+                            <summary>🎿 滑雪用品</summary>
+                            <div class="check-list">
+                                <label class="check-item"><input type="checkbox"> 防水手套 (滑雪專用)</label>
+                                <label class="check-item"><input type="checkbox"> 滑雪襪 (長筒厚襪)</label>
+                                <label class="check-item"><input type="checkbox"> 滑雪頭套</label>
+                                <label class="check-item"><input type="checkbox"> 防摔褲</label>
+                            </div>
+                        </details>
+
+                        <details class="nested-details">
+                            <summary>🌂 其他雜項</summary>
+                            <div class="check-list">
+                                <label class="check-item"><input type="checkbox"> 摺疊傘 (防濕雪)</label>
+                                <label class="check-item"><input type="checkbox"> 暖暖包</label>
+                                <label class="check-item"><input type="checkbox"> 圓鏡</label>
+                                <label class="check-item"><input type="checkbox"> 濕紙巾 / 面紙</label>
+                                <label class="check-item"><input type="checkbox"> 背包 / 側背包</label>
+                                <label class="check-item"><input type="checkbox"> 保溫杯</label>
+                            </div>
+                        </details>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </details>
+
+    <div id="day1" class="section-title"/>Day 1 (一) 出發</div>
     <div class="card">
         
         <div class="timeline-item">
-            <div class="time-badge">09:08</div>
+            <div class="time-badge">09:00</div>
             <div class="activity-content">
                 <details class="timeline-details">
                     <summary class="activity-title">桃園客運 🚍</summary>
                     <div class="timeline-box">
-                        <div class="info-line">📍 出發：桃園火車站 (後站)</div>
+                        <div class="info-line">📍 出發：經國莊敬路口</div>
                         <div class="info-line">🏁 抵達：桃園機場第一航廈</div>
-                        <div class="info-line">⏱️ 車程：約 40 分鐘</div>
-                        <div class="info-line">💰 票價：$37 (可刷悠遊卡)</div>
-                        <a href="https://www.tybus.com.tw/" target="_blank" class="btn-bus">
+                        <div class="info-line">⏱️ 車程：約 30~40 分鐘</div>
+                        <div class="info-line">💰 票價：$28 (可刷悠遊卡)</div>
+                        <a href="https://ebus.tycg.gov.tw/ebus/driving-map/5059" target="_blank" class="btn-bus">
                             🔍 客運即時動態
                         </a>
                     </div>
                 </details>
-                <div class="activity-desc">請提早 10 分鐘候車</div>
             </div>
         </div>
 
         <div class="timeline-item">
             <div class="time-badge">09:40</div>
+            <div class="activity-content">
+                <a href="https://www.taoyuan-airport.com/maps" class="activity-title">抵達桃園機場第一航廈</a>
+                <div class="activity-desc">點擊查看機場資訊</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">12:30</div>
             <div class="activity-content">
                 <a href="#info" class="activity-title">桃園機場 → 新千歲 ✈️</a>
                 <div class="activity-desc">點擊查看航班資訊</div>
@@ -212,7 +305,7 @@
         <div class="timeline-item">
             <div class="time-badge">17:20</div>
             <div class="activity-content">
-                <a href="https://www.hokkaido-airports.com/zh-CHT/new-chitose/floormap/domestic/#anchor-tabs" target="_blank" class="activity-title">
+                <a href="https://www.hokkaido-airports.com/zh-CHT/new-chitose/floormap/international/#anchor-tabs" target="_blank" class="activity-title">
                     抵達新千歲機場 🗺️
                 </a>
                 <div class="activity-desc">點擊查看機場地圖</div>
@@ -223,14 +316,73 @@
             <div class="time-badge">19:50</div>
             <div class="activity-content">
                 <details class="timeline-details">
-                    <summary class="activity-title">搭乘北海道 JR 🚆</summary>
+                    <summary class="activity-title">新千歲 → 南小樽站 JR 🚆</summary>
                     <div class="timeline-box">
-                        <div class="info-line">前往小樽方向 (快速 Airport 號)</div>
-                        <div class="info-line">前往小樽方向 (快速 Airport 號)</div>
-                        <div class="info-line">前往小樽方向 (快速 Airport 號)</div>
+                        
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #ddd; background-color: #f1f1f1;">
+                                    <th style="padding: 8px; text-align: left;">出發</th>
+                                    <th style="padding: 8px; text-align: left;">轉乘</th>
+                                    <th style="padding: 8px; text-align: left;">抵達</th>
+                                    <th style="padding: 8px; text-align: left;">車票</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr onclick="window.open('https://maps.app.goo.gl/hDgC5bPry1mjDxEy9')" 
+                                    style="border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.2s;"
+                                    onmouseover="this.style.backgroundColor='#e3f2fd'" 
+                                    onmouseout="this.style.backgroundColor='transparent'">
+                                    
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">19:51</td>
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">20:32</td>
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">21:15</td>
+                                    <td style="padding: 10px 8px; vertical-align: top;">¥1,820+¥840</td>
+                                </tr>
+
+                                <tr style="cursor: pointer; transition: background 0.2s;"
+                                    onmouseover="this.style.backgroundColor='#e3f2fd'" 
+                                    onmouseout="this.style.backgroundColor='transparent'">
+                                    
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">19:51</td>
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">20:44</td>
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">21:26</td>
+                                    <td style="padding: 10px 8px; vertical-align: top;">¥1,820+¥840</td>
+                                </tr>
+
+                                <tr onclick="window.open('https://maps.app.goo.gl/jF5uUvWLiMSmDjZA7')" 
+                                    style="cursor: pointer; transition: background 0.2s;"
+                                    onmouseover="this.style.backgroundColor='#e3f2fd'" 
+                                    onmouseout="this.style.backgroundColor='transparent'">
+                                    
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">20:19</td>
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">21:05</td>
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">21:46</td>
+                                    <td style="padding: 10px 8px; vertical-align: top;">¥1,820+¥840</td>
+                                </tr>
+
+                                <tr onclick="window.open('https://maps.app.goo.gl/jF5uUvWLiMSmDjZA7')" 
+                                    style="cursor: pointer; transition: background 0.2s;"
+                                    onmouseover="this.style.backgroundColor='#e3f2fd'" 
+                                    onmouseout="this.style.backgroundColor='transparent'">
+                                    
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">20:47</td>
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">21:30</td>
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">22:12</td>
+                                    <td style="padding: 10px 8px; vertical-align: top;">¥1,820+¥840</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="font-size: 0.75rem; color: #888; margin-top: 8px; text-align: right;">
+                            👆 點擊表格行可查看地點
+                        </div>
+
+                        <a href="https://jrhokkaidonorikae.com/pc/cgi/result.cgi?search_target=route&search_way=time&sum_target=7&faretype=2&jr=on&privately=on&dep_node=NEW%20CHITOSE%20AIRPORT&arv_node=MINAMI-OTARU&via_node01=&via_node02=&via_node03=&year=2026&month=01&day=19&hour=19&minute=51&search_type=departure&sort=time&max_route=5&nearexpress=on&sprexprs=on&utrexprs=on&exprs=on&slputr=on&slpexprs=on&sprnozomi=on&transfer=normal&lang=en&xsl=hrsr" target="_blank" class="btn-bus" style="margin-top: 10px;">
+                            🗺️ 查看完整路線圖
+                        </a>
                     </div>
                 </details>
-                <div class="activity-desc">點擊查看車種資訊</div>
+                <div class="activity-desc">點擊查看 JR 時刻表與票價</div>
             </div>
         </div>
 
@@ -253,11 +405,21 @@
                                 📍 北海道小樽市住吉町 (導航)
                             </a>
                         </div>
-                        <div class="info-line">📅 入住：2026/XX/XX (一)</div>
-                        <div class="info-line">⚠️ 注意：全館禁煙，晚上10點後請降低音量</div>
+
+                        <details class="nested-details" style="background-color: #fff3cd; border: 1px solid #ffeeba;">
+                            <summary style="color: #856404; font-weight: bold;">⚠️ 入住注意事項</summary>
+                            <div style="padding: 10px; font-size: 0.85rem; color: #856404;">
+                                <div style="margin-bottom: 5px;"></div>
+                                <div style="margin-bottom: 5px;">1. 用過的毛巾要放到每層樓的毛巾收集箱</div>
+                                <div style="margin-bottom: 5px;">2. 寄放行李需寫上房號、件數、返回時間<br>(最晚17:30)</div>
+                                <div style="margin-bottom: 5px;">3. 進入房間需脫鞋，行李箱需搬起</div>
+                                <div style="margin-bottom: 5px;">4. 21:00後勿在飯店前飲食、避免噪音</div>
+                                <div style="margin-bottom: 5px;">5. 21:00後為自助入住</div>
+                            </div>
+                        </details>
 
                         <div class="mini-btn-group">
-                            <button class="mini-btn btn-emergency" onclick="showModal('【緊急聯絡方式】\n\n🕒 聯絡時間：09:00 - 22:00\n📧 信箱：help@stays-otaru.jp\n📞 電話：+81-134-12-3456\n\n*若遇緊急狀況請先撥打電話*')">
+                            <button class="mini-btn btn-emergency" onclick="showModal('【緊急聯絡方式】\n\n🕒 聯絡時間：21:00 - 12:00\n📧 信箱：staysotaru777@gmail.com\n📞 電話：090-5958-1906\n\n*若遇緊急狀況請先撥打電話*')">
                                 🆘 緊急聯絡
                             </button>
                             
@@ -270,35 +432,73 @@
                 <div class="activity-desc">點擊查看入住詳情</div>
             </div>
         </div>
-
     </div>
 
     <div id="day2" class="section-title">Day 2 (二) 余市-小樽</div>
     <div class="card">
+
+        <div class="timeline-item">
+            <div class="time-badge">07:00</div>
+            <div class="activity-content">
+                <details class="timeline-details">
+                    <summary class="activity-title">余市蒸餾所 🥃</summary>
+                    <div class="timeline-box">
+                        <div class="info-line">📅 導覽時間：09:30</div>
+                        <div class="info-line">🔢 預約編號：iI1cExkzTyr5KNf7</div>
+                        
+                        <a href="https://www.nikka.com/" target="_blank" class="btn-bus">
+                            🌐 官方網站
+                        </a>
+                    </div>
+                </details>
+                <div class="activity-desc">已預約導覽</div>
+            </div>
+        </div>
         
         <div class="timeline-item">
-            <div class="time-badge">07:XX</div>
+            <div class="time-badge">07:57</div>
             <div class="activity-content">
                 <details class="timeline-details">
                     <summary class="activity-title">南小樽 → 余市 🚃</summary>
                     <div class="timeline-box">
-                        <div class="info-line" style="border-bottom: 1px dashed #ddd; padding-bottom: 5px; margin-bottom: 8px;">
-                            <strong>Option 1</strong><br>
-                            07:13 發 - 07:45 着 (¥XXX)<br>
-                            <span style="font-size:0.8rem; color:#888;">JR 函館本線 (往然別)</span>
-                        </div>
-                        <div class="info-line" style="border-bottom: 1px dashed #ddd; padding-bottom: 5px; margin-bottom: 8px;">
-                            <strong>Option 2</strong><br>
-                            07:55 發 - 08:30 着 (¥XXX)<br>
-                            <span style="font-size:0.8rem; color:#888;">JR 函館本線 (往俱知安)</span>
-                        </div>
                         
-                        <a href="https://www.google.com/maps/dir/?api=1&origin=Minami-Otaru+Station&destination=Yoichi+Station&travelmode=transit" target="_blank" class="btn-bus" style="background-color: #4285F4;">
-                            🗺️ Google Map 路線資訊
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #ddd; background-color: #f1f1f1;">
+                                    <th style="padding: 8px; text-align: left;">出發</th>
+                                    <th style="padding: 8px; text-align: left;">轉乘</th>
+                                    <th style="padding: 8px; text-align: left;">抵達</th>
+                                    <th style="padding: 8px; text-align: left;">車票</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.2s;">
+                                    
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">06:56</td>
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">07:04</td>
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">07:29</td>
+                                    <td style="padding: 10px 8px; vertical-align: top;">¥580</td>
+                                </tr>
+
+                                <tr style="cursor: pointer; transition: background 0.2s;">
+                                    
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">07:57</td>
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">08:06</td>
+                                    <td style="padding: 10px 8px; font-weight: bold; vertical-align: top;">08:30</td>
+                                    <td style="padding: 10px 8px; vertical-align: top;">¥580</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="font-size: 0.75rem; color: #888; margin-top: 8px; text-align: right;">
+                            👆 點擊表格行可查看地點
+                        </div>
+
+                        <a href="https://jrhokkaidonorikae.com/pc/cgi/result.cgi?search_target=route&search_way=time&sum_target=7&faretype=2&jr=on&privately=on&dep_node=MINAMI-OTARU&arv_node=YOICHI&via_node01=&via_node02=&via_node03=&year=2026&month=01&day=20&hour=9&minute=30&search_type=arrival&sort=time&max_route=5&nearexpress=on&sprexprs=on&utrexprs=on&exprs=on&slputr=on&slpexprs=on&sprnozomi=on&transfer=normal&lang=en&xsl=hrsr" target="_blank" class="btn-bus" style="margin-top: 10px;">
+                            🗺️ 查看完整路線圖
                         </a>
                     </div>
                 </details>
-                <div class="activity-desc">點擊查看 3 班列車資訊</div>
+                <div class="activity-desc">點擊查看 2 班列車資訊</div>
             </div>
         </div>
 
@@ -308,9 +508,8 @@
                 <details class="timeline-details">
                     <summary class="activity-title">余市蒸餾所 🥃</summary>
                     <div class="timeline-box">
-                        <div class="info-line">📅 導覽時間：10:00 - 11:00</div>
-                        <div class="info-line">🔢 預約編號：#20260101</div>
-                        <div class="info-line">⚠️ 需提早 15 分鐘報到</div>
+                        <div class="info-line">📅 導覽時間：09:30</div>
+                        <div class="info-line">🔢 預約編號：iI1cExkzTyr5KNf7</div>
                         
                         <a href="https://www.nikka.com/" target="_blank" class="btn-bus">
                             🌐 官方網站
@@ -1067,7 +1266,7 @@
         <div class="timeline-item">
             <div class="time-badge">18:00</div>
             <div class="activity-content">
-                <a href="https://airport.ne.jp/ch/" target="_blank" class="activity-title">
+                <a href="https://www.hokkaido-airports.com/ja/hakodate/" target="_blank" class="activity-title">
                     抵達函館機場 ✈️
                 </a>
                 <div class="activity-desc">點擊查看機場官網 (樓層/商店)</div>
@@ -1084,26 +1283,198 @@
             </div>
         </div>
 
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <a href="https://www.hokkaido-airports.com/zh-CHT/new-chitose/floormap/domestic/#anchor-tabs" target="_blank" class="activity-title">
+                    抵達新千歲機場 🛬
+                </a>
+                <div class="activity-desc">國內線航廈</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <a href="https://www.hokto.co.jp/zh_tw/sapporo-chitose/" target="_blank" class="activity-title">
+                    機場巴士 (往市區) 🚌
+                </a>
+                <div class="activity-desc">搭乘北都交通/中央巴士</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <details class="timeline-details">
+                    <summary class="activity-title">FAV LUX 札幌 🏨</summary>
+                    <div class="timeline-box">
+                        <div class="info-line">
+                            <a href="https://www.google.com/maps/dir/Yoichi+Station,+Yoichi,+Hokkaido/Otaru+Station,+Otaru,+Hokkaido/1" target="_blank" class="map-link">
+                                📍 札幌市中央區 (點擊導航)
+                            </a>
+                        </div>
+                        <div class="info-line">📅 入住：2026/XX/XX (一)</div>
+                        <div class="info-line">⚠️ 注意：最後一晚住宿</div>
+
+                        <div class="mini-btn-group">
+                            <button class="mini-btn btn-emergency" onclick="showModal('【FAV LUX 緊急聯絡】\n\n🕒 櫃台時間：24小時\n📞 電話：+81-11-567-8900\n📧 信箱：sapporo@fav-hotels.com')">
+                                🆘 緊急聯絡
+                            </button>
+                            <button class="mini-btn btn-checkin" onclick="showModal('【自助入住資訊】\n\n1. 入口密碼：(請確認郵件)\n2. 平板輸入訂單編號\n3. 領取房號密碼單')">
+                                🔑 自助入住
+                            </button>
+                        </div>
+                    </div>
+                </details>
+                <div class="activity-desc">點擊查看住宿詳情</div>
+            </div>
+        </div>
+
     </div>
 
-    <div id="pack" class="section-title">行李檢查</div>
+    <div id="day9" class="section-title">Day 9 (二) 札幌 I</div>
     <div class="card">
-        <div class="checklist-item">
-            <div class="checklist-box"></div>
-            <span>護照 (期限內)</span>
+        
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <a href="https://www.google.com/maps/search/札幌+住宅展示場" target="_blank" class="activity-title">
+                    住宅展示中心 🏠
+                </a>
+                <div class="activity-desc">參觀北海道建築設計 / 樣品屋</div>
+            </div>
         </div>
-        <div class="checklist-item">
-            <div class="checklist-box"></div>
-            <span>日幣現金 / 信用卡</span>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <a href="https://www.google.com/maps/search/Costco+Sapporo" target="_blank" class="activity-title">
+                    Costco 採買 🛒
+                </a>
+                <div class="activity-desc">購買伴手禮 / 藥妝 / 生鮮</div>
+            </div>
         </div>
-        <div class="checklist-item">
-            <div class="checklist-box"></div>
-            <span>網卡 / 漫遊</span>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <details class="timeline-details">
+                    <summary class="activity-title">FAV LUX 札幌 🏨</summary>
+                    <div class="timeline-box">
+                        <div class="info-line">
+                            <a href="https://www.google.com/maps/dir/Yoichi+Station,+Yoichi,+Hokkaido/Otaru+Station,+Otaru,+Hokkaido/1" target="_blank" class="map-link">
+                                📍 札幌市中央區 (點擊導航)
+                            </a>
+                        </div>
+                        <div class="info-line">📅 續住第二晚</div>
+                        <div class="info-line">⚠️ 門禁密碼同昨日</div>
+
+                        <div class="mini-btn-group">
+                            <button class="mini-btn btn-emergency" onclick="showModal('【FAV LUX 緊急聯絡】\n\n🕒 櫃台時間：24小時\n📞 電話：+81-11-567-8900\n📧 信箱：sapporo@fav-hotels.com')">
+                                🆘 緊急聯絡
+                            </button>
+                            <button class="mini-btn btn-checkin" onclick="showModal('【自助入住資訊】\n\n1. 入口密碼：(請確認郵件)\n2. 平板輸入訂單編號\n3. 領取房號密碼單')">
+                                🔑 自助入住
+                            </button>
+                        </div>
+                    </div>
+                </details>
+                <div class="activity-desc">點擊查看住宿詳情</div>
+            </div>
         </div>
-        <div class="checklist-item">
-            <div class="checklist-box"></div>
-            <span>行動電源</span>
+
+    </div>
+
+    <div id="day10" class="section-title">Day 10 (三) 札幌 II</div>
+    <div class="card">
+        
+        <div class="timeline-item">
+            <div class="time-badge">全天</div>
+            <div class="activity-content">
+                <div class="activity-title">自由行動 🚶</div>
+                <div class="activity-desc">市區逛街 / 補貨 / 景點漫遊</div>
+            </div>
         </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <details class="timeline-details">
+                    <summary class="activity-title">FAV LUX 札幌 🏨</summary>
+                    <div class="timeline-box">
+                        <div class="info-line">
+                            <a href="https://www.google.com/maps/dir/Yoichi+Station,+Yoichi,+Hokkaido/Otaru+Station,+Otaru,+Hokkaido/1" target="_blank" class="map-link">
+                                📍 札幌市中央區 (點擊導航)
+                            </a>
+                        </div>
+                        <div class="info-line">📅 續住第三晚</div>
+                        <div class="info-line">⚠️ 門禁密碼同昨日</div>
+
+                        <div class="mini-btn-group">
+                            <button class="mini-btn btn-emergency" onclick="showModal('【FAV LUX 緊急聯絡】\n\n🕒 櫃台時間：24小時\n📞 電話：+81-11-567-8900\n📧 信箱：sapporo@fav-hotels.com')">
+                                🆘 緊急聯絡
+                            </button>
+                            <button class="mini-btn btn-checkin" onclick="showModal('【自助入住資訊】\n\n1. 入口密碼：(請確認郵件)\n2. 平板輸入訂單編號\n3. 領取房號密碼單')">
+                                🔑 自助入住
+                            </button>
+                        </div>
+                    </div>
+                </details>
+                <div class="activity-desc">點擊查看住宿詳情</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="day11" class="section-title">Day 11 (四) 回家</div>
+    <div class="card">
+        
+        <div class="timeline-item">
+            <div class="time-badge">10:00</div>
+            <div class="activity-content">
+                <details class="timeline-details">
+                    <summary class="activity-title">FAV LUX 退房 🔑</summary>
+                    <div class="timeline-box">
+                        <div class="info-line">⏰ 退房時間：10:00 前</div>
+                        <div class="info-line">🧳 寄放行李：是 / 否</div>
+                        <div class="info-line" style="font-size:0.8rem; color:#888;">(若不寄放，請直接前往巴士站)</div>
+                    </div>
+                </details>
+                <div class="activity-desc">辦理退房手續</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <a href="https://www.hokto.co.jp/zh_tw/sapporo-chitose/" target="_blank" class="activity-title">
+                    薄野站 → 新千歲 🚌
+                </a>
+                <div class="activity-desc">搭乘機場巴士 (點擊看時刻表)</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">XX:XX</div>
+            <div class="activity-content">
+                <a href="https://www.hokkaido-airports.com/zh-CHT/new-chitose/floormap/international/#anchor-tabs" target="_blank" class="activity-title">
+                    抵達新千歲機場 🛬
+                </a>
+                <div class="activity-desc">最後衝刺：伴手禮 / 拉麵</div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="time-badge">18:40</div>
+            <div class="activity-content">
+                <a href="#info" class="activity-title">
+                    新千歲 → 桃園機場 ✈️
+                </a>
+                <div class="activity-desc">點擊查看上方航班資訊 (回程)</div>
+            </div>
+        </div>
+
     </div>
 
     <div style="text-align: center; color: #aaa; font-size: 0.8rem; padding: 20px;">
@@ -1119,7 +1490,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=3"></script>
+    <script src="script.js?v=4"></script>
 
 </body>
 </html>

@@ -18,32 +18,40 @@ function closeModal(e) {
     }
 }
 
-// --- 超級強制手風琴效果 (手動控制版) ---
-document.querySelectorAll('summary').forEach(summary => {
-    summary.addEventListener('click', function(e) {
-        // 1. 阻止瀏覽器原本的開關行為 (這一步最關鍵！)
-        e.preventDefault();
+// 巢狀手風琴
+function setupAccordion(container = document) {
+    const detailsList = container.querySelectorAll('details');
 
-        // 2. 取得這個標題所屬的 details 區塊
-        const currentDetails = this.parentElement;
-        
-        // 3. 記錄它現在是不是開著的
-        const isOpen = currentDetails.hasAttribute('open');
+    detailsList.forEach(details => {
+        const summary = details.querySelector('summary');
+        if (!summary) return;
 
-        // 4. 先無情地把網頁上「所有」的 details 全部關掉
-        document.querySelectorAll('details').forEach(det => {
-            det.removeAttribute('open');
+        summary.addEventListener('click', function(e) {
+            e.preventDefault(); // 阻止原本 toggle
+
+            const isOpen = details.hasAttribute('open');
+            const parent = details.parentElement;
+
+            // 只關閉同層其他的 details
+            Array.from(parent.children).forEach(sibling => {
+                if (sibling.tagName === 'DETAILS' && sibling !== details) {
+                    sibling.removeAttribute('open');
+                }
+            });
+
+            // 切換自己
+            if (!isOpen) {
+                details.setAttribute('open', '');
+            } else {
+                details.removeAttribute('open'); // 點已開啟就收回
+            }
         });
-
-        // 5. 如果原本是關著的，現在就把它打開
-        // (如果原本是開著的，因為步驟4已經關了，這裡就不動作，達成「關閉」的效果)
-        if (!isOpen) {
-            currentDetails.setAttribute('open', '');
-        }
     });
-});
+}
 
-// script.js 最下方加入
+// 初始化手風琴
+setupAccordion();
+
 
 // --- 函館山即時天氣功能 (Open-Meteo API) ---
 async function fetchHakodateWeather() {
@@ -86,3 +94,28 @@ async function fetchHakodateWeather() {
 
 // 執行天氣抓取函式
 fetchHakodateWeather();
+
+// --- 自動同步標題功能 (data-title 版) ---
+function syncSectionTitles() {
+    const navLinks = document.querySelectorAll('.nav-item');
+
+    navLinks.forEach(link => {
+        const targetId = link.getAttribute('href');
+        
+        // 取得我們藏在 data-title 裡的完整標題
+        const fullTitle = link.getAttribute('data-title');
+
+        if (targetId && targetId.startsWith('#day')) {
+            const targetDiv = document.querySelector(targetId);
+            
+            // 如果 div 存在，且導覽列有設定 data-title
+            if (targetDiv && fullTitle) {
+                // 就把下方的標題換成完整的 data-title
+                targetDiv.innerText = fullTitle;
+            }
+        }
+    });
+}
+
+// 執行同步
+syncSectionTitles();

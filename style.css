@@ -225,17 +225,18 @@ summary {
 summary::-webkit-details-marker { display: none; } /* Chrome 隱藏預設三角形 */
 
 /* 右側的展開符號 */
-summary::after {
-    content: '▼'; 
+/* 只對「非巢狀 details」加箭頭 */
+details:not(.nested-details) > summary::after {
+    content: '▼';
     font-size: 0.8rem;
     color: #ccc;
     transition: transform 0.3s;
 }
-details[open] summary::after {
-    transform: rotate(180deg); /* 展開時旋轉箭頭 */
+
+details:not(.nested-details)[open] > summary::after {
+    transform: rotate(180deg);
     color: var(--accent);
 }
-
 /* 展開後的詳細內容區塊 */
 .flight-detail-box {
     background-color: #f8f9fa; /* 淺灰背景區隔 */
@@ -564,4 +565,52 @@ a.activity-title:active {
     width: 5px;
     background: linear-gradient(to right, rgba(0,0,0,0.1), transparent);
     pointer-events: none;
+}
+
+/* --- 巢狀行李清單樣式 --- */
+.nested-details {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    padding: 2px;
+}
+
+.nested-details summary {
+    padding: 10px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    list-style: none; /* 移除預設三角形 (部分瀏覽器) */
+}
+
+/* 自定義小箭頭 */
+.nested-details summary::after {
+    content: '+'; 
+    float: right;
+    font-weight: bold;
+    color: #aaa;
+}
+.nested-details[open] summary::after {
+    content: '-';
+}
+
+/* 清單項目樣式 */
+.check-list {
+    padding: 5px 10px 10px;
+    margin: 0;
+    list-style: none;
+}
+.check-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #f9f9f9;
+    color: #444;
+}
+.check-item:last-child { border-bottom: none; }
+.check-item input[type="checkbox"] {
+    transform: scale(1.2); /* 放大勾選框 */
+    margin-right: 10px;
+    accent-color: var(--accent); /* 勾選後的顏色 */
 }
