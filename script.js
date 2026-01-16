@@ -1,3 +1,7 @@
+let typePressTimer;
+let isTypeLongPress = false;
+let currentSubFilters = []; // 儲存被勾選的「細項」
+
 // --- 導覽列點擊效果 (保留原本的) ---
 document.querySelectorAll('.nav-item').forEach(link => {
     link.addEventListener('click', function() {
@@ -260,28 +264,6 @@ function renderTable(data) {
             ? `${item.hours}<br><span style="font-size:0.8rem; color:#888;">(${item.note})</span>` 
             : item.hours;
 
-        // ============================================
-        // ⬇️ 修改開始：處理名稱截斷與連結 ⬇️
-        // ============================================
-        
-        let displayName = "";
-        let weight = 0;
-        const limit = 14; // 總權重限制 (20單位)
-
-        for (let char of item.name) {
-            // 判斷權重：字元編碼大於 255 (通常是中文/全形) 算 2，否則算 1
-            let charWeight = char.charCodeAt(0) > 255 ? 2 : 1;
-            
-            // 如果加上這個字會超過限制，就加上 "..." 並停止
-            if (weight + charWeight > limit) {
-                displayName += "...";
-                break; 
-            }
-            
-            displayName += char;
-            weight += charWeight;
-        }
-
         // oncontextmenu="return false" 是為了防止手機長按跳出系統選單
         const longPressEvents = `
             data-fullname="${item.name}" 
@@ -293,8 +275,8 @@ function renderTable(data) {
         `;
 
         const nameDisplay = item.url && item.url.startsWith('http')
-            ? `<a href="${item.url}" target="_blank" class="clean-link" title="${item.name}" ${longPressEvents}>${displayName}</a>`
-            : `<span style="font-weight:bold; color:var(--primary);" title="${item.name}" ${longPressEvents}>${displayName}</span>`;
+            ? `<a href="${item.url}" target="_blank" class="clean-link" title="${item.name}" ${longPressEvents}>${item.name}</a>`
+            : `<span style="font-weight:bold; color:var(--primary);" title="${item.name}" ${longPressEvents}>${item.name}</span>`;
 
         // ============================================
         // ⬆️ 修改結束 ⬆️
@@ -305,19 +287,27 @@ function renderTable(data) {
         const rawSubType = item.subType || item.type;
         const subArray = rawSubType.split(/;|；/).map(s => s.trim()).filter(s => s);
         
-        let displayText = "";
-        
+        // 預設顯示第一項
+        let displayText = subArray[0];            
+
+        // 如果目前有正在篩選的關鍵字 (currentSubFilters 在全域變數中)
+        if (typeof currentSubFilters !== 'undefined' && currentSubFilters.length > 0) {
+            // 在這間店的細項清單中，尋找是否有「符合目前篩選條件」的項目
+            const match = subArray.find(sub => currentSubFilters.includes(sub));
+            
+            // 如果有找到 (例如店裡賣 [拉麵, 餃子]，使用者篩選 [餃子])
+            if (match) {
+                displayText = match; // 強制將顯示文字改成 "餃子"
+            }
+        }
         if (subArray.length > 1) {
             // 如果超過 1 項：顯示第一項 + "..."
-            displayText = `${subArray[0]}...`;
-        } else {
-            // 如果只有 1 項：直接顯示
-            displayText = subArray[0];
+            displayText += `...`;
         }
 
         const row = `
             <tr>
-                <td>${nameDisplay}</td>
+                <td class="food-name">${nameDisplay}</td>
                 <td style="text-align: center; cursor: pointer;" 
                 data-name="${item.name}"
                     data-full="${rawSubType}"
@@ -578,10 +568,6 @@ function scrollToTop() {
 // ============================================
 // ⬇️ 樹狀種類篩選功能 (Tree Filter) ⬇️
 // ============================================
-
-let typePressTimer;
-let isTypeLongPress = false;
-let currentSubFilters = []; // 儲存被勾選的「細項」
 
 // 1. 開始按壓 (Header)
 function startTypeLongPress() {

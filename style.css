@@ -785,7 +785,8 @@ th.desc .sort-icon::after {
 /* 2. 表格本體設定 */
 .food-custom-table {
     width: 100%;
-    border-collapse: separate;  /* ⚠️ 關鍵：為了讓 Sticky Header 生效 */
+    border-collapse: collapse;  /* ⚠️ 關鍵：為了讓 Sticky Header 生效 */
+    table-layout: fixed; /* 關鍵屬性 */
     border-spacing: 0;
     min-width: 600px;           /* 確保在手機上不會擠成一團 */
 }
@@ -814,6 +815,64 @@ th.desc .sort-icon::after {
 /* 5. 點擊排序時的互動感 */
 .food-custom-table th.sortable:active {
     background-color: #e2e6ea;
+}
+
+/* 第一欄：餐廳名稱 (給它少一點空間，配合您的14字限制) */
+.food-custom-table th:nth-child(1),
+.food-custom-table td:nth-child(1) {
+    width: 30%; /* 原本可能佔了 50% 以上，現在限制它 */
+}
+
+/* 第二欄：細項 */
+.food-custom-table th:nth-child(2),
+.food-custom-table td:nth-child(2) {
+    width: 20%;
+}
+
+/* 第三欄：營業時間 */
+.food-custom-table th:nth-child(3),
+.food-custom-table td:nth-child(3) {
+    width: 30%;
+}
+
+/* 第四欄：星等 (這欄內容最少，給最小寬度) */
+.food-custom-table th:nth-child(4),
+.food-custom-table td:nth-child(4) {
+    width: 20%;
+}
+
+/* 3. 防止文字撐開 (讓超出寬度的文字變成 ...) */
+.food-name {
+    /* 確保文字不會因為太長而破壞版面，超過就顯示 ... */
+    white-space: nowrap;      /* 強制不換行 */
+    overflow: hidden;         /* 超出隱藏 */
+    text-overflow: ellipsis;  /* 顯示 ... */
+    vertical-align: middle;
+}
+
+/* 2. 內層連結 (A) - 真正的截斷邏輯寫在這裡 */
+.food-name a {
+    display: block;           /* 讓連結變成方塊，填滿格子 */
+    width: 100%;              /* 寬度佔滿 100% */
+    white-space: nowrap;      /* 強制不換行 */
+    overflow: hidden;         /* 超出隱藏 */
+    text-overflow: ellipsis;  /* 顯示 ... */
+    text-decoration: none;    /* 移除底線 (美觀) */
+    color: inherit;           /* 跟隨文字顏色 */
+
+    /* --- ✨ 新增以下設定來防止反白與長按選單 --- */
+    
+    /* 1. 禁止文字被選取 (反白) */
+    -webkit-user-select: none; /* Safari / Chrome */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Edge / IE */
+    user-select: none;         /* 標準語法 */
+
+    /* 2. (手機版) 禁止長按跳出「開啟連結/複製」的系統選單 */
+    -webkit-touch-callout: none; 
+
+    /* 3. (手機版) 移除點擊瞬間的半透明背景色塊 (Android/iOS 常見) */
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* --- 隱形連結樣式 (餐廳名稱專用) --- */
