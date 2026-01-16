@@ -989,3 +989,97 @@ th.desc .sort-icon::after {
 .type-header.desc .sort-icon::after {
     opacity: 1;         /* 變亮 */
 }
+
+/* --- 樹狀篩選器專用樣式 --- */
+
+/* 主類別 (Parent) */
+.filter-parent-item {
+    font-weight: bold;
+    background-color: #f9f9f9;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+
+/* 細項容器 (Children Container) */
+.filter-sub-list {
+    padding-left: 25px; /* 縮排 */
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+/* 細項 (Child) */
+.filter-sub-item {
+    padding: 8px 0;
+    font-size: 0.95rem;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+
+/* Checkbox 樣式微調 */
+.filter-parent-item input,
+.filter-sub-item input {
+    margin-right: 8px;
+    transform: scale(1.2);
+}
+
+/* --- 樹狀篩選器樣式更新 --- */
+
+/* 1. 細項清單預設隱藏 */
+.filter-sub-list {
+    display: none; /* 預設不顯示 */
+    padding-left: 25px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+/* 2. 當加上 .open 類別時才顯示 */
+.filter-sub-list.open {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+/* 3. 父層項目樣式優化 */
+.filter-parent-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    background-color: #f9f9f9;
+}
+
+/* 4. 文字標籤區塊 (可點擊區域) */
+.parent-label-click {
+    flex: 1;            /* 佔滿剩餘空間，讓點擊範圍變大 */
+    cursor: pointer;    /* 滑鼠變手型 */
+    user-select: none;  /* 防止點擊時反白文字 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 讓箭頭靠右，或改成 flex-start 靠左 */
+}
+
+/* 5. 小箭頭動畫 */
+.arrow-icon {
+    font-size: 0.8rem;
+    color: #888;
+    transition: transform 0.3s ease;
+    margin-left: 8px;
+}
+/* 當父層被打開時，箭頭旋轉 */
+.filter-parent-item.active .arrow-icon {
+    transform: rotate(180deg); /* 或是 90deg，看你原本箭頭方向 */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 針對半選狀態的樣式 */
+.parent-check:indeterminate {
+    /* 大部分瀏覽器不支援直接改 icon，但可以改背景色或邊框 */
+    accent-color: #888; /* 將勾選框顏色改成灰色，表示未完全選中 */
+    opacity: 0.8;
+}

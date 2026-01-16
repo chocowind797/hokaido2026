@@ -796,7 +796,8 @@
                                 📍 札幌市中央區 (點擊導航)
                             </a>
                         </div>
-
+                        <div class="info-line">🍳 早餐(6:30~10:00)：¥3,800</div>
+                        <div class="info-line">🛀 公共澡堂：6:00~10:00 14:00~01:30</div>
                         <div class="mini-btn-group">
                             <button class="mini-btn btn-emergency" onclick="showModal('🆘 緊急聯絡', '【The Gate Hotel 緊急聯絡】\n\n🕒 24小時櫃台\n📞 電話：+81-11-206-4588')">
                                 🆘 緊急聯絡
@@ -1766,17 +1767,17 @@
                         <tr>
                             <th onclick="sortFoodTable('name')" class="sortable">餐廳名稱 <span class="sort-icon"></span></th>
                             <th 
-                                onclick="handleTypeHeaderClick('type')" 
+                                onclick="handleTypeHeaderClick('subType')" 
                                 onmousedown="startTypeLongPress()" 
                                 onmouseup="cancelTypeLongPress()" 
                                 ontouchstart="startTypeLongPress()" 
                                 ontouchend="cancelTypeLongPress()" 
-                                class="sortable type-header">
+                                class="sortable type-header"
+                                style="text-align: center;">
                                 種類 <span class="sort-icon"></span>
                             </th>
-                            <th onclick="sortFoodTable('hours')" class="sortable">營業時間 <span class="sort-icon"></span></th>
-                            <th onclick="sortFoodTable('price')" class="sortable">價格 <span class="sort-icon"></span></th>
-                            <th onclick="sortFoodTable('rating')" class="sortable">星等 <span class="sort-icon"></span></th>
+                            <th onclick="sortFoodTable('hours')" class="sortable" style="text-align: center;">營業時間 <span class="sort-icon"></span></th>
+                            <th onclick="sortFoodTable('rating')" class="sortable" style="text-align: center;">星等 <span class="sort-icon"></span></th>
                         </tr>
                     </thead>
                     <tbody id="food-table-body">
@@ -1802,9 +1803,19 @@
             <div id="filter-options" class="filter-list">
                 </div>
             <div class="filter-buttons">
-                <button onclick="clearFilter()" class="btn-cancel">清除/全選</button>
+                <button onclick="toggleSelectAll()" class="btn-cancel">全選</button>
                 <button onclick="applyFilter()" class="btn-confirm">確認篩選</button>
             </div>
+        </div>
+    </div>
+
+    <div id="sub-detail-modal" class="modal-overlay" style="display: none;">
+        <div class="filter-box" style="text-align: center;">
+            <h3 id="detail-title" style="margin-bottom: 15px;"></h3>
+            
+            <div id="detail-content" style="font-size: 1.1rem; line-height: 1.8; color: #444; margin-bottom: 20px;"></div>
+            
+            <button onclick="closeDetailModal()" class="btn-confirm" style="width: 100%;">關閉</button>
         </div>
     </div>
 
