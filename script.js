@@ -119,3 +119,102 @@ function syncSectionTitles() {
 
 // 執行同步
 syncSectionTitles();
+
+// --- 美食頁面與排序功能 ---
+
+// 1. 餐廳資料庫 (您可以自由新增/修改這裡的資料)
+const foodData = [
+    { name: "三角市場", type: "海鮮丼", hours: "07:00-17:00", price: 2000, rating: 4.5 },
+    { name: "若雞時代", type: "炸雞", hours: "11:00-21:00", price: 1200, rating: 4.2 },
+    { name: "LeTAO 本店", type: "甜點", hours: "09:00-18:00", price: 900, rating: 4.8 },
+    { name: "政壽司", type: "壽司", hours: "11:00-21:00", price: 3500, rating: 4.6 },
+    { name: "北果樓", type: "泡芙", hours: "09:00-17:00", price: 300, rating: 4.3 },
+    { name: "出拔小路", type: "路邊攤", hours: "11:00-20:00", price: 800, rating: 3.9 },
+    { name: "澤崎水產", type: "烤海鮮", hours: "08:00-16:00", price: 2500, rating: 4.4 }
+];
+
+// 紀錄目前的排序狀態
+let currentSort = {
+    column: null,
+    direction: 'asc' // 'asc' (升序) 或 'desc' (降序)
+};
+
+// 開啟美食頁面
+function openFoodPage() {
+    document.getElementById('food-page-overlay').style.display = 'flex';
+    // 第一次打開時，預設渲染原始資料
+    renderTable(foodData);
+}
+
+// 關閉美食頁面
+function closeFoodPage() {
+    document.getElementById('food-page-overlay').style.display = 'none';
+}
+
+// 渲染表格 (將資料填入 HTML)
+function renderTable(data) {
+    const tbody = document.getElementById('food-table-body');
+    tbody.innerHTML = ""; // 清空目前內容
+
+    data.forEach(item => {
+        // 產生星號字串 (例如 4.5 -> ⭐4.5)
+        const starStr = `⭐ ${item.rating}`;
+
+        const row = `
+            <tr>
+                <td style="font-weight:bold; color:var(--primary);">${item.name}</td>
+                <td>${item.type}</td>
+                <td>${item.hours}</td>
+                <td>¥${item.price.toLocaleString()}</td>
+                <td style="color:#f39c12; font-weight:bold;">${starStr}</td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+// 核心功能：排序表格
+function sortFoodTable(column) {
+    const ths = document.querySelectorAll('#food-table th');
+    
+    // 1. 判斷排序方向
+    if (currentSort.column === column) {
+        // 如果點擊的是同一個欄位，切換方向 (升 -> 降 -> 升)
+        currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+    } else {
+        // 如果點擊新欄位，重置為升序
+        currentSort.column = column;
+        currentSort.direction = 'asc';
+    }
+
+    // 2. 更新表頭箭頭顯示 (CSS class)
+    ths.forEach(th => {
+        th.classList.remove('asc', 'desc'); // 先移除所有箭頭
+        // 找到目前被點擊的那個 th，加上對應的 class
+        if (th.getAttribute('onclick').includes(column)) {
+            th.classList.add(currentSort.direction);
+        }
+    });
+
+    // 3. 執行資料排序
+    // 複製一份新陣列以免動到原始資料 (使用 spread syntax [...])
+    const sortedData = [...foodData].sort((a, b) => {
+        let valA = a[column];
+        let valB = b[column];
+
+        // 如果是字串，轉換成小寫來比較 (避免大小寫影響)
+        if (typeof valA === 'string') valA = valA.toLowerCase();
+        if (typeof valB === 'string') valB = valB.toLowerCase();
+
+        if (valA < valB) {
+            return currentSort.direction === 'asc' ? -1 : 1;
+        }
+        if (valA > valB) {
+            return currentSort.direction === 'asc' ? 1 : -1;
+        }
+        return 0;
+    });
+
+    // 4. 重新渲染表格
+    renderTable(sortedData);
+}

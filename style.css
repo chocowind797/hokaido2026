@@ -614,3 +614,78 @@ a.activity-title:active {
     margin-right: 10px;
     accent-color: var(--accent); /* 勾選後的顏色 */
 }
+
+/* --- 全螢幕美食頁面樣式 --- */
+.fullscreen-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f2f2f7; /* 與背景同色 */
+    z-index: 3000; /* 蓋過所有內容 */
+    display: none; /* 預設隱藏 */
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.page-header {
+    background: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    z-index: 10;
+}
+
+.close-page-btn {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.page-content {
+    flex: 1;
+    overflow-y: auto; /* 內容可捲動 */
+    padding: 20px;
+}
+
+/* --- 排序表格樣式 --- */
+th.sortable {
+    cursor: pointer; /* 讓滑鼠變手指 */
+    user-select: none; /* 防止點擊時選取文字 */
+    transition: background 0.2s;
+}
+th.sortable:active {
+    background-color: #e9ecef;
+}
+
+/* 排序箭頭 */
+.sort-icon::after {
+    content: '↕'; /* 預設顯示雙向箭頭 */
+    font-size: 0.8rem;
+    color: #ccc;
+    margin-left: 5px;
+}
+
+/* 升序樣式 (由 JS 添加 class) */
+th.asc .sort-icon::after {
+    content: '▲';
+    color: var(--accent);
+}
+
+/* 降序樣式 */
+th.desc .sort-icon::after {
+    content: '▼';
+    color: var(--accent);
+}
