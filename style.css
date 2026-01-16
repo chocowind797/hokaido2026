@@ -689,3 +689,40 @@ th.desc .sort-icon::after {
     content: '▼';
     color: var(--accent);
 }
+
+/* --- 回到頂部按鈕樣式 --- */
+#scrollTopBtn {
+    position: fixed;        /* 固定定位，不隨捲動跑掉 */
+    bottom: 30px;           /* 距離底部 30px */
+    right: 30px;            /* 距離右邊 30px */
+    z-index: 9999;          /* 確保在最上層 */
+    
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;     /* 圓形 */
+    border: none;
+    
+    background-color: var(--accent); /* 使用強調色 (藍色) */
+    color: white;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* 陰影讓它更有立體感 */
+    cursor: pointer;
+    
+    /* 動畫過渡效果 */
+    opacity: 0;             /* 預設透明 (隱藏) */
+    visibility: hidden;     /* 預設不可點擊 */
+    transform: translateY(20px); /* 預設往下沉一點 */
+    transition: all 0.3s ease;
+}
+
+#scrollTopBtn:hover {
+    background-color: var(--primary); /* 滑鼠移上去變深色 */
+    transform: translateY(-3px);      /* 微微浮起 */
+}
+
+/* 當加上 .show 類別時，顯示按鈕 */
+#scrollTopBtn.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}

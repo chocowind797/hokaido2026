@@ -218,3 +218,30 @@ function sortFoodTable(column) {
     // 4. 重新渲染表格
     renderTable(sortedData);
 }
+
+// --- 回到頂部按鈕功能 ---
+
+const scrollBtn = document.getElementById("scrollTopBtn");
+
+// 監聽網頁捲動事件
+window.onscroll = function() {
+    scrollFunction();
+};
+
+function scrollFunction() {
+    // 當捲動超過 300px 時顯示按鈕
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        scrollBtn.classList.add("show");
+    } else {
+        scrollBtn.classList.remove("show");
+    }
+}
+
+// 點擊按鈕執行的動作
+function scrollToTop() {
+    // 平滑捲動回最上方
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
