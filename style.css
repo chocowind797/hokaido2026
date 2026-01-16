@@ -320,6 +320,12 @@ details:not(.nested-details)[open] > summary::after {
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(3px); /* 背景模糊特效 */
+
+    /* ⚠️ 新增這行：阻止捲動連鎖 (關鍵！) */
+    overscroll-behavior: contain;
+    
+    /* 確保視窗本身不能捲動，只有裡面的表格容器可以捲 */
+    overflow: hidden;
 }
 
 .modal-box {
@@ -431,7 +437,17 @@ details:not(.nested-details)[open] > summary::after {
 }
 .btn-emergency { background-color: #e74c3c; } /* 紅色 */
 .btn-checkin { background-color: #27ae60; }   /* 綠色 */
-.btn-bus { background-color: var(--accent); width: 100%; display: block; text-align: center; text-decoration: none; padding: 8px; border-radius: 6px; color: white; margin-top: 10px;}
+.btn-bus { 
+    background-color: var(--accent); 
+    width: 100%; 
+    display: block; 
+    text-align: center; 
+    text-decoration: none; 
+    padding: 8px; 
+    border-radius: 6px; 
+    color: white; 
+    margin-top: 10px;
+}
 
 /* --- 隱形連結樣式 --- */
 /* 針對是連結(a)的標題，強迫它長得像普通文字 */
@@ -457,6 +473,11 @@ a.activity-title:active {
     margin-bottom: 15px;
     padding-bottom: 10px;
     border-bottom: 1px dashed #e0e0e0;
+
+    /* --- 新增以下三行讓它可以滑動 --- */
+    overflow-x: auto;          /* 允許橫向捲動 */
+    min-width: 100%;           /* 容器寬度 */
+    min-width: 350px;    /* 如果覺得太擠，可以解開這行強制設寬度 */
 }
 
 /* 表頭 (1, 2) */
@@ -715,14 +736,256 @@ th.desc .sort-icon::after {
     transition: all 0.3s ease;
 }
 
-#scrollTopBtn:hover {
-    background-color: var(--primary); /* 滑鼠移上去變深色 */
-    transform: translateY(-3px);      /* 微微浮起 */
-}
-
 /* 當加上 .show 類別時，顯示按鈕 */
 #scrollTopBtn.show {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+}
+
+/* --- 表格欄位自動貼合內容 (Auto Fit) --- */
+
+/* 1. 讓表格寬度「由內容決定」，而不是配合螢幕 */
+.table-scroll-wrapper table {
+    width: max-content !important; /* 關鍵：表格多寬，就顯示多寬 */
+    min-width: 100%;               /* 至少填滿畫面 */
+}
+
+/* 2. 設定儲存格內容 */
+.table-scroll-wrapper th, 
+.table-scroll-wrapper td {
+    white-space: nowrap;  /* 關鍵：文字不准換行！ */
+    width: auto;          /* 寬度自動調整 */
+    padding: 12px 15px;   /* 增加一點左右空間，比較不擁擠 */
+}
+
+/* 3. 針對原本的 JR 表格微調 */
+/* 避免之前的 inline-style 權重太高，這裡強制覆蓋 */
+.timeline-box table th,
+.timeline-box table td {
+    vertical-align: middle !important; /* 內容垂直置中 */
+}
+
+/* ========================================= */
+/* ⬇️ 美食清單專用樣式 (獨立運作) ⬇️ */
+/* ========================================= */
+
+/* 1. 外層容器：負責控制高度與垂直捲動 */
+.food-table-container {
+    max-height: 75vh;           /* 設定高度為螢幕的 75% */
+    overflow-y: auto;           /* 超過高度就顯示垂直卷軸 */
+    overflow-x: auto;           /* 內容太寬也可以左右滑 */
+    border-top: 3px solid var(--accent); /* 頂部裝飾線 */
+    background: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* 2. 表格本體設定 */
+.food-custom-table {
+    width: 100%;
+    border-collapse: separate;  /* ⚠️ 關鍵：為了讓 Sticky Header 生效 */
+    border-spacing: 0;
+    min-width: 600px;           /* 確保在手機上不會擠成一團 */
+}
+
+/* 3. 欄位通用設定 */
+.food-custom-table th, 
+.food-custom-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    white-space: nowrap;        /* 強制不換行，保持整齊 */
+}
+
+/* 4. 🎯 核心功能：固定表頭 (Sticky Header) */
+.food-custom-table thead th {
+    position: sticky;           /* 黏性定位 */
+    top: 0;                     /* 黏在容器最上方 */
+    z-index: 10;                /* 層級設高，蓋過內容 */
+    background-color: #f8f9fa;  /* 務必有背景色，不然字會透過去 */
+    color: #555;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd; /* 表頭下方的分隔線 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* 微微陰影提升質感 */
+}
+
+/* 5. 點擊排序時的互動感 */
+.food-custom-table th.sortable:active {
+    background-color: #e2e6ea;
+}
+
+/* --- 隱形連結樣式 (餐廳名稱專用) --- */
+.clean-link {
+    text-decoration: none;      /* 去除底線 */
+    color: inherit;             /* 繼承原本的文字顏色 (深灰色) */
+    font-weight: bold;          /* 保持粗體 */
+    cursor: pointer;            /* 滑鼠移上去變手指 */
+    display: block;             /* 讓整塊文字區域都好點擊 */
+    transition: color 0.2s;     /* 顏色變換特效 */
+}
+
+/* 滑鼠移上去時稍微變色，讓使用者知道可以點 (可選) */
+.clean-link:hover {
+    color: var(--accent);       /* 變成主題藍色 */
+    opacity: 0.8;
+}
+
+/* --- Toast 提示框樣式 --- */
+#toast-box {
+    visibility: hidden;         /* 預設隱藏 */
+    min-width: 200px;
+    max-width: 80%;             /* 不超過螢幕寬度 */
+    background-color: rgba(50, 50, 50, 0.9); /* 深黑色半透明 */
+    color: #fff;
+    text-align: center;
+    border-radius: 50px;        /* 膠囊形狀 */
+    padding: 12px 24px;
+    position: fixed;            /* 固定位置 */
+    z-index: 10001;             /* 比全螢幕頁面還高 */
+    left: 50%;
+    bottom: 80px;               /* 顯示在畫面下方 */
+    transform: translateX(-50%); /* 水平置中 */
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    opacity: 0;                 /* 透明度動畫用 */
+    transition: opacity 0.3s, bottom 0.3s;
+}
+
+/* 顯示時的狀態 */
+#toast-box.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 100px;              /* 微微往上浮動的效果 */
+}
+
+/* --- 自動吃飯符號 (Dining Icon) --- */
+/* 定義一個專用的 class */
+.activity-dining::after {
+    content: ' 🍽️';       /* 這裡設定您想要出現的符號 (也可以換成 🍜 或 🥢) */
+    margin-left: 5px;     /* 符號跟文字之間留一點空隙 */
+    font-size: 0.9em;     /* 符號稍微縮小一點點，比較優雅 */
+    vertical-align: middle; /* 讓符號垂直置中 */
+}
+
+/* --- 日期小標示樣式 --- */
+.date-label {
+    font-size: 0.85rem;     /* 字體小一點，比較精緻 */
+    color: #999;            /* 淺灰色 */
+    font-weight: normal;    /* 不要粗體，區分標題 */
+    background-color: #f0f0f0; /* (選用) 加個淺底色看起來更像標籤 */
+    padding: 2px 8px;       /* (選用) 增加一點內距 */
+    border-radius: 4px;     /* (選用) 圓角 */
+}
+
+/* --- 種類篩選視窗樣式 --- */
+
+/* 1. 背景遮罩 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* 半透明黑底 */
+    z-index: 20000; /* 比所有東西都高 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+/* 2. 篩選框本體 */
+.filter-box {
+    background: white;
+    width: 85%;
+    max-width: 320px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: popIn 0.3s ease;
+}
+
+/* 3. Checkbox 清單區域 */
+.filter-list {
+    max-height: 250px;
+    overflow-y: auto;
+    margin: 15px 0;
+    text-align: left;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* 4. 單個選項樣式 */
+.filter-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 1rem;
+}
+.filter-item input {
+    margin-right: 10px;
+    transform: scale(1.3); /* 把勾選框變大一點，好按 */
+}
+
+/* 5. 按鈕區 */
+.filter-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.btn-confirm {
+    flex: 1;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.btn-cancel {
+    flex: 1;
+    background-color: #ddd;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* 6. 表頭的小提示符號 */
+.filter-hint {
+    font-size: 0.8em;
+    color: #888;
+    margin-left: 2px;
+}
+
+/* 彈出動畫 */
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* 當真的進行排序時 (變成 asc 或 desc)，恢復原本的箭頭邏輯 */
+.type-header.asc .sort-icon::after,
+.type-header.desc .sort-icon::after {
+    color: inherit; /* 恢復原本顏色 */
+}
+
+/* ========================================= */
+/* ⬇️ 特別設定：「種類」欄位的橘色箭頭 ⬇️ */
+/* ========================================= */
+
+/* 1. 當箭頭出現時，強制變成橘色 */
+.type-header .sort-icon::after {
+    color: #e67e22 !important; /* 鮮豔的橘色 */
+    font-weight: bold;
+}
+
+/* 3. 排序狀態：當被點擊排序後，變回完全不透明 */
+.type-header.asc .sort-icon::after,
+.type-header.desc .sort-icon::after {
+    opacity: 1;         /* 變亮 */
 }
