@@ -1142,3 +1142,11 @@ th.desc .sort-icon::after {
     accent-color: #888; /* 將勾選框顏色改成灰色，表示未完全選中 */
     opacity: 0.8;
 }
+
+/* 計數器文字樣式 */
+.count-label {
+    font-size: 0.85rem;
+    color: #888;
+    margin-left: 8px;
+    font-weight: normal; /* 讓數字不要太搶眼 */
+}

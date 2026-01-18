@@ -1,6 +1,7 @@
 let typePressTimer;
 let isTypeLongPress = false;
 let currentSubFilters = []; // 儲存被勾選的「細項」
+let currentFullySelectedTypes = [];
 
 // --- 導覽列點擊效果 (保留原本的) ---
 document.querySelectorAll('.nav-item').forEach(link => {
@@ -236,7 +237,7 @@ function csvToJSON(csvText) {
             
             rating: cols[6]?.trim(), // 星等
             
-            map: cols[7]?.trim() || '#' // 網址
+            url: cols[7]?.trim() || '#' // 網址
         };
 
         result.push(obj);
@@ -259,10 +260,15 @@ function renderTable(data) {
     }
 
     data.forEach(item => {
+        const hours = item.hours.split(/;|；/).map(s => s.trim()).filter(s => s);
+        let openhours = '';
+        hours.forEach(h => {
+            openhours += h + `<br>`;
+        })
         // 1. 處理備註 (維持原本邏輯)
         const hoursDisplay = item.note 
-            ? `${item.hours}<br><span style="font-size:0.8rem; color:#888;">(${item.note})</span>` 
-            : item.hours;
+            ? `${openhours}<br><span style="font-size:0.8rem; color:#888;">(${item.note})</span>` 
+            : openhours;
 
         // oncontextmenu="return false" 是為了防止手機長按跳出系統選單
         const longPressEvents = `
@@ -273,7 +279,7 @@ function renderTable(data) {
             onmouseup="cancelLongPress()"
             oncontextmenu="return false;" 
         `;
-
+        
         const nameDisplay = item.url && item.url.startsWith('http')
             ? `<a href="${item.url}" target="_blank" class="clean-link" title="${item.name}" ${longPressEvents}>${item.name}</a>`
             : `<span style="font-weight:bold; color:var(--primary);" title="${item.name}" ${longPressEvents}>${item.name}</span>`;
@@ -288,7 +294,12 @@ function renderTable(data) {
         const subArray = rawSubType.split(/;|；/).map(s => s.trim()).filter(s => s);
         
         // 預設顯示第一項
-        let displayText = subArray[0];            
+        let displayText = subArray[0];
+
+        // 🔥 關鍵修改：如果細項是空的，改用「種類」當作細項
+        if (subArray.length === 0 && item.type) {
+            subArray = [item.type]; // 把種類變成陣列的第一項
+        }
 
         // 如果目前有正在篩選的關鍵字 (currentSubFilters 在全域變數中)
         if (typeof currentSubFilters !== 'undefined' && currentSubFilters.length > 0) {
@@ -470,8 +481,6 @@ function sortFoodTable(column) {
     });
 
     renderTable(sortedData);
-    
-    // 如果目前有開啟篩選視窗，長按功能重新綁定不會受影響
 }
 
 // --- 自動將所有表格變成可左右滑動 ---
@@ -513,10 +522,10 @@ function startLongPress(element) {
     // 取得完整名稱
     const fullName = element.getAttribute('data-fullname');
     
-    // 設定計時器：如果按住超過 600 毫秒，就顯示 Toast
+    // 設定計時器：如果按住超過 400 毫秒，就顯示 Toast
     pressTimer = setTimeout(() => {
         showToast(fullName);
-    }, 600);
+    }, 400);
 }
 
 // 2. 結束按壓 (手指離開 或 滑鼠放開 或 滑動手指)
@@ -575,7 +584,7 @@ function startTypeLongPress() {
     typePressTimer = setTimeout(() => {
         isTypeLongPress = true; // 標記為長按觸發
         openFilterModal();      // 開啟篩選視窗
-    }, 600); // 0.6秒視為長按
+    }, 400); // 0.6秒視為長按
 }
 
 // 2. 結束按壓
@@ -598,19 +607,14 @@ function handleTypeHeaderClick(column) {
 function openFilterModal() {
     const modal = document.getElementById('filter-modal');
     const listDiv = document.getElementById('filter-options');
-    listDiv.innerHTML = ""; // 清空
+    listDiv.innerHTML = ""; 
 
-    // --- 建構樹狀資料結構 ---
-    // 格式: { "日式": Set("拉麵", "壽司"), "美式": Set("漢堡") }
+    // 1. 建構樹狀資料結構
     const tree = {};
 
     foodData.forEach(item => {
-        const mainType = item.type; // 主種類
-
-        // ⚠️ 修正這裡：加上 || "" (如果 subType 是 undefined，就用空字串代替)
-        const rawSubType = item.subType || "";
-        
-        // 分割細項 (例如 "拉麵, 沾麵" -> ["拉麵", "沾麵"])
+        const mainType = item.type || "未分類"; 
+        const rawSubType = item.subType || ""; 
         const subs = rawSubType.split(/;|；/).map(s => s.trim()).filter(s => s);
 
         if (!tree[mainType]) {
@@ -619,54 +623,88 @@ function openFilterModal() {
         subs.forEach(sub => tree[mainType].add(sub));
     });
 
-    // --- 生成 HTML ---
-    Object.keys(tree).forEach(mainType => {
-        // 1. 建立主分類 (Parent)
-        // ⚠️ 修改重點：將 Checkbox 和 文字 分開
-        // Checkbox: 負責勾選
-        // span.parent-label-click: 負責展開收合 (onclick="toggleSubMenu(...)")
+    // 2. 🔥 關鍵修改：排序邏輯
+    // 先轉成陣列，再進行排序
+    // 規則：沒有細項的排前面 (hasSubs 為 false)，有細項的排後面
+    const sortedTypes = Object.keys(tree).sort((a, b) => {
+        const hasSubsA = tree[a].size > 0;
+        const hasSubsB = tree[b].size > 0;
         
+        // 如果 A 無細項且 B 有細項，A 排前面 (-1)
+        if (!hasSubsA && hasSubsB) return -1;
+        // 如果 A 有細項且 B 無細項，B 排前面 (1)
+        if (hasSubsA && !hasSubsB) return 1;
+        // 如果狀態一樣，則照筆畫/字母排序 (選用)
+        return a.localeCompare(b);
+    });
+
+    // 3. 生成 HTML
+    sortedTypes.forEach(mainType => {
+        const hasSubs = tree[mainType].size > 0;
+        const totalCount = tree[mainType].size;
+        
+        // 計算目前已勾選的數量 (用於初始顯示)
+        let checkedCount = 0;
+        tree[mainType].forEach(sub => {
+            if (currentSubFilters.includes(sub)) checkedCount++;
+        });
+
+        // 決定是否顯示箭頭與計數器
+        const arrowHtml = hasSubs ? '<span class="arrow-icon">▼</span>' : '';
+        const clickEvent = hasSubs ? 'onclick="toggleSubMenu(this)"' : '';
+        const cursorStyle = hasSubs ? 'cursor: pointer;' : 'cursor: default;';
+        
+        // 🔥 關鍵修改：計數器 HTML
+        // data-parent 屬性是為了讓後面的 JS 方便抓到它來更新數字
+        const counterHtml = hasSubs 
+            ? `<span class="count-label" data-parent="${mainType}">(${checkedCount}/${totalCount})</span>` 
+            : '';
+
+        // A. 建立主分類 (Parent)
         const parentDiv = document.createElement('div');
-        // 為了方便找兄弟元素，我們給 parentDiv 一個 class 標記
         parentDiv.className = 'filter-group-wrapper'; 
         
         parentDiv.innerHTML = `
             <div class="filter-parent-item">
                 <input type="checkbox" class="parent-check" data-parent="${mainType}">
                 
-                <span class="parent-label-click" onclick="toggleSubMenu(this)">
-                    ${mainType} 
-                    <span class="arrow-icon">▼</span>
+                <span class="parent-label-click" ${clickEvent} style="${cursorStyle}">
+                    <span>
+                        ${mainType} 
+                        ${counterHtml} 
+                    </span>
+                    ${arrowHtml}
                 </span>
             </div>
         `;
         listDiv.appendChild(parentDiv);
 
-        // 2. 建立子分類容器 (Children)
-        const subListDiv = document.createElement('div');
-        subListDiv.className = 'filter-sub-list'; // CSS 預設 display: none
-        
-        // 3. 放入細項 Checkbox
-        tree[mainType].forEach(subItem => {
-            const isChecked = currentSubFilters.includes(subItem);
+        // B. 建立子分類容器
+        if (hasSubs) {
+            const subListDiv = document.createElement('div');
+            subListDiv.className = 'filter-sub-list'; 
             
-            const subDiv = document.createElement('div');
-            subDiv.className = 'filter-sub-item';
-            subDiv.innerHTML = `
-                <label style="display:flex; align-items:center; width:100%; cursor:pointer;">
-                    <input type="checkbox" class="child-check" value="${subItem}" data-parent="${mainType}" ${isChecked ? 'checked' : ''}>
-                    ${subItem}
-                </label>
-            `;
-            subListDiv.appendChild(subDiv);
-        });
-        
-        listDiv.appendChild(subListDiv);
+            tree[mainType].forEach(subItem => {
+                const isChecked = currentSubFilters.includes(subItem);
+                
+                const subDiv = document.createElement('div');
+                subDiv.className = 'filter-sub-item';
+                subDiv.innerHTML = `
+                    <label style="display:flex; align-items:center; width:100%; cursor:pointer;">
+                        <input type="checkbox" class="child-check" value="${subItem}" data-parent="${mainType}" ${isChecked ? 'checked' : ''}>
+                        ${subItem}
+                    </label>
+                `;
+                subListDiv.appendChild(subDiv);
+            });
+            
+            listDiv.appendChild(subListDiv);
+        }
     });
 
-    // --- 綁定連動事件 (全選邏輯) ---
     bindTreeCheckboxEvents();
 
+    // 初始化狀態
     Object.keys(tree).forEach(mainType => {
         updateParentCheckboxState(mainType);
     });
@@ -724,19 +762,28 @@ function bindTreeCheckboxEvents() {
 // 3. 確認篩選
 function applyFilter() {
     const childBoxes = document.querySelectorAll('.child-check');
+    const parentBoxes = document.querySelectorAll('.parent-check'); // 取得所有父層 Checkbox
+    
     currentSubFilters = [];
+    currentFullySelectedTypes = []; // 重置
 
-    // 收集所有被勾選的「細項」
+    // 1. 收集被勾選的「細項」
     childBoxes.forEach(box => {
         if (box.checked) {
             currentSubFilters.push(box.value);
         }
     });
 
-    // 如果一個都沒勾，或是全勾了 -> 視為顯示全部
-    // (這裡邏輯看您需求，目前設定：沒勾=顯示全部)
-    if (currentSubFilters.length === 0) {
-        // 清空暫存，視為無過濾
+    // 2. 🔥 關鍵修改：收集被「全選」的「主分類」
+    // 我們檢查父層 checkbox 是否被勾選，且「不是」半選狀態 (indeterminate)
+    parentBoxes.forEach(box => {
+        if (box.checked && !box.indeterminate) {
+            currentFullySelectedTypes.push(box.dataset.parent);
+        }
+    });
+
+    // 如果一個細項都沒勾，且一個主分類都沒全選 -> 視為顯示全部
+    if (currentSubFilters.length === 0 && currentFullySelectedTypes.length === 0) {
         showToast("顯示所有種類");
     }
 
@@ -769,11 +816,35 @@ function toggleSelectAll() {
 function executeFilterRender() {
     let filteredData = foodData;
 
-    if (currentSubFilters.length > 0) {
+    // 只要有任何篩選條件 (有勾細項 OR 有全選的主分類)
+    if (currentSubFilters.length > 0 || currentFullySelectedTypes.length > 0) {
+        
         filteredData = foodData.filter(item => {
-            // 比對邏輯：該餐廳的「細項字串」中，是否包含「任何一個」使用者勾選的關鍵字
-            // 例如：餐廳是「壽司, 海鮮」，使用者勾了「壽司」，這樣算符合。
-            return currentSubFilters.some(filterTag => item.subType.includes(filterTag));
+            // 1. 準備資料
+            const rawSubType = item.subType || "";
+            // 切割細項陣列
+            const subArray = rawSubType.split(/;|；/).map(s => s.trim()).filter(s => s);
+            const hasSubItems = subArray.length > 0;
+
+            // 2. 判斷 A：細項是否符合？
+            // 只有當餐廳「有細項」時，才去比對 currentSubFilters
+            let isSubMatch = false;
+            if (hasSubItems) {
+                isSubMatch = subArray.some(sub => currentSubFilters.includes(sub));
+            }
+
+            // 3. 判斷 B：主分類是否被全選？
+            // 只有當餐廳「沒有細項」時，我們才給它這張「外卡」
+            // 邏輯：這間店沒細項，但它的分類 (如"日式") 被使用者全選了，所以它應該要出現
+            let isTypeFullMatch = false;
+            if (!hasSubItems) {
+                isTypeFullMatch = currentFullySelectedTypes.includes(item.type);
+            }
+
+            // 4. 只要符合其中一種情況就留下來
+            // 狀況一：使用者勾了「拉麵」，這間店有「拉麵」 -> PASS
+            // 狀況二：使用者全選了「日式」，這間店沒寫細項但它是「日式」 -> PASS
+            return isSubMatch || isTypeFullMatch;
         });
     }
 
@@ -781,30 +852,30 @@ function executeFilterRender() {
 }
 
 // 更新父層 Checkbox 的狀態 (全選 / 未選 / 半選)
+// 更新父層 Checkbox 的狀態 (含數字更新)
 function updateParentCheckboxState(parentName) {
-    // 1. 找到該分類的父層 Checkbox
     const parentBox = document.querySelector(`.parent-check[data-parent="${parentName}"]`);
     if (!parentBox) return;
 
-    // 2. 找到該分類下所有的子層 Checkbox
     const children = document.querySelectorAll(`.child-check[data-parent="${parentName}"]`);
     const totalCount = children.length;
-    
-    // 3. 計算被勾選的子層數量
     const checkedCount = Array.from(children).filter(c => c.checked).length;
 
-    // 4. 設定狀態
+    // 1. 設定 Checkbox 狀態 (全選/半選/不選)
     if (checkedCount === 0) {
-        // A. 完全沒選
         parentBox.checked = false;
         parentBox.indeterminate = false;
     } else if (checkedCount === totalCount) {
-        // B. 全選
         parentBox.checked = true;
         parentBox.indeterminate = false;
     } else {
-        // C. 部分選擇 (半選樣式) 🔥
-        parentBox.checked = false; // 這裡設 true 或 false 都可以，重點是下面那行
-        parentBox.indeterminate = true; // 瀏覽器會自動顯示為 ➖
+        parentBox.checked = false;
+        parentBox.indeterminate = true;
+    }
+
+    // 2. 🔥 關鍵修改：即時更新計數器文字
+    const counterLabel = document.querySelector(`.count-label[data-parent="${parentName}"]`);
+    if (counterLabel) {
+        counterLabel.innerText = `(${checkedCount}/${totalCount})`;
     }
 }
